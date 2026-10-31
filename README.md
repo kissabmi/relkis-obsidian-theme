@@ -1,9 +1,9 @@
-# RELISA
+# RelKis
 
 A dark, quiet theme for Obsidian: deep violet, gold accents and Spectral headings. In light mode it turns into
 Washi: rice paper, ink and cinnabar.
 
-![RELISA in dark mode](images/preview.png)
+![RelKis in dark mode](images/preview.png)
 
 ## What it covers
 
@@ -23,11 +23,11 @@ Washi: rice paper, ink and cinnabar.
 
 ## Install
 
-Settings → Appearance → Themes → **Manage** → search for “RELISA” → **Install and use**.
+Settings → Appearance → Themes → **Manage** → search for “RelKis” → **Install and use**.
 
 Until the theme appears in the catalog, download `manifest.json` and `theme.css` from the
-[latest release](https://github.com/kissabmi/relisa-obsidian-theme/releases/latest) into
-`<your vault>/.obsidian/themes/RELISA/`, then pick RELISA in Settings → Appearance → Themes.
+[latest release](https://github.com/kissabmi/relkis-obsidian-theme/releases/latest) into
+`<your vault>/.obsidian/themes/RelKis/`, then pick RelKis in Settings → Appearance → Themes.
 
 New versions are published as GitHub releases, and Obsidian offers them as theme updates.
 
@@ -53,10 +53,10 @@ The theme is MIT licensed (see [LICENSE](LICENSE)). The embedded fonts are under
 Тёмная спокойная тема для Obsidian: глубокий фиолетовый, золото и заголовки Spectral. В светлой схеме она становится
 Washi — рисовая бумага, тушь и киноварь.
 
-**Установка.** Настройки → Внешний вид → Темы → открыть каталог тем → найти «RELISA» → установить и включить. Пока
+**Установка.** Настройки → Внешний вид → Темы → открыть каталог тем → найти «RelKis» → установить и включить. Пока
 темы нет в каталоге, скачайте `manifest.json` и `theme.css` из
-[последнего релиза](https://github.com/kissabmi/relisa-obsidian-theme/releases/latest) в папку
-`.obsidian/themes/RELISA/` своего хранилища и выберите RELISA в Настройки → Внешний вид → Темы.
+[последнего релиза](https://github.com/kissabmi/relkis-obsidian-theme/releases/latest) в папку
+`.obsidian/themes/RelKis/` своего хранилища и выберите RelKis в Настройки → Внешний вид → Темы.
 
 **Обновления.** Каждая новая версия выходит релизом на GitHub, и Obsidian предлагает её как обновление темы.
 
