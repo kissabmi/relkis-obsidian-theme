@@ -8,7 +8,7 @@ Washi: rice paper, ink and cinnabar.
 ## What it covers
 
 - **Notes.** Spectral headings, IBM Plex Sans text, gold links, a quote with a thin gold line, callouts, code,
-  tables, tags and properties. Two extra callouts: `> [!relisa]` and `> [!kintsugi]`.
+  tables, tags and properties. Two extra callouts: `> [!relkis]` and `> [!kintsugi]`.
 - **Window.** A gold line on the active tab, the ribbon, the file explorer, a status bar of its own, menus, settings,
   the command palette, notices and the empty state.
 - **Vault sections.** Top-level folders named `0. …` to `9. …` each get a colour, with a thin line along an open
@@ -33,7 +33,7 @@ New versions are published as GitHub releases, and Obsidian offers them as theme
 
 ## Looks
 
-Dark mode is Cosmos and light mode is Washi. The companion RELISA Nebula plugin (not public yet) can switch between
+Dark mode is Cosmos and light mode is Washi. A companion plugin (not public yet) can switch between
 more looks: Ink Cosmos, Kintsugi, and Washi in dark mode. The theme is complete without it.
 
 ## Fonts
