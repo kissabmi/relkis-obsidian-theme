@@ -1,5 +1,5 @@
 /* RelKis for Obsidian · https://github.com/kissabmi/relkis-obsidian-theme · MIT
-   Dark: Cosmos by default; the RELISA Nebula plugin can switch it to Ink Cosmos, Kintsugi or Washi (nb-os-* on body).
+   Dark: Cosmos by default; a companion plugin can switch it to Ink Cosmos, Kintsugi or Washi (nb-os-* on body).
    Light: Washi. Built by build.py from src/*.css. Fonts: Spectral and IBM Plex Sans (renamed Nebula Sans),
    subset to Latin and Cyrillic, SIL Open Font License 1.1, see fonts/OFL-*.txt. */
 
@@ -565,11 +565,36 @@ font-size: 1.04em;
 padding: 0.1em 1.2em;
 }
 .callout {
-border-left: 2px solid rgba(var(--callout-color), 0.85);
-background-color: rgba(var(--callout-color), 0.07);
+--nt-callout: var(--nt-sem-blue);
+border-left: 2px solid rgba(var(--nt-callout), 0.85);
+background-color: rgba(var(--nt-callout), 0.07);
 mix-blend-mode: normal;
 }
+.callout[data-callout='abstract'], .callout[data-callout='summary'], .callout[data-callout='tldr'],
+.callout[data-callout='tip'], .callout[data-callout='hint'], .callout[data-callout='important'] {
+--nt-callout: var(--nt-sem-cyan);
+}
+.callout[data-callout='success'], .callout[data-callout='check'], .callout[data-callout='done'] {
+--nt-callout: var(--nt-sem-green);
+}
+.callout[data-callout='question'], .callout[data-callout='help'], .callout[data-callout='faq'] {
+--nt-callout: var(--nt-sem-yellow);
+}
+.callout[data-callout='warning'], .callout[data-callout='caution'], .callout[data-callout='attention'] {
+--nt-callout: var(--nt-sem-orange);
+}
+.callout[data-callout='failure'], .callout[data-callout='fail'], .callout[data-callout='missing'],
+.callout[data-callout='danger'], .callout[data-callout='error'], .callout[data-callout='bug'] {
+--nt-callout: var(--nt-sem-red);
+}
+.callout[data-callout='example'] {
+--nt-callout: var(--nt-sem-purple);
+}
+.callout[data-callout='quote'], .callout[data-callout='cite'] {
+--nt-callout: 158, 158, 158;
+}
 .callout-title {
+color: rgb(var(--nt-callout));
 font-size: 0.82em;
 letter-spacing: 0.1em;
 text-transform: uppercase;
@@ -691,19 +716,22 @@ body.theme-light {
 font-family: var(--nt-font-display);
 font-variant-numeric: lining-nums;
 }
+.callout[data-callout='relkis'],
 .callout[data-callout='relisa'] {
---callout-color: var(--nt-accent-rgb);
+--nt-callout: var(--nt-accent-rgb);
 --callout-icon: lucide-sparkles;
 }
+.callout[data-callout='relkis'] > .callout-title > .callout-icon .svg-icon,
 .callout[data-callout='relisa'] > .callout-title > .callout-icon .svg-icon {
 visibility: hidden;
 }
+.callout[data-callout='relkis'] > .callout-title > .callout-icon,
 .callout[data-callout='relisa'] > .callout-title > .callout-icon {
 background: var(--nt-accent);
 mask: var(--nt-mark) center / 15px no-repeat;
 }
 .callout[data-callout='kintsugi'] {
---callout-color: var(--nt-accent-rgb);
+--nt-callout: var(--nt-accent-rgb);
 --callout-icon: lucide-git-commit-vertical;
 border-left: 0;
 background:
