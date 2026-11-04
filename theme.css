@@ -1,7 +1,297 @@
 /* RelKis for Obsidian · https://github.com/kissabmi/relkis-obsidian-theme · MIT
-   Dark: Cosmos by default; a companion plugin can switch it to Ink Cosmos, Kintsugi or Washi (nb-os-* on body).
-   Light: Washi. Built by build.py from src/*.css. Fonts: Spectral and IBM Plex Sans (renamed Nebula Sans),
+   Eleven looks. Pick one in Style Settings, or let the RELISA Nebula plugin choose; without either, dark mode is Cosmos
+   and light mode is Washi. Built by build.py from src/. Fonts: Spectral and IBM Plex Sans (renamed Nebula Sans),
    subset to Latin and Cyrillic, SIL Open Font License 1.1, see fonts/OFL-*.txt. */
+
+/* @settings
+
+name: RelKis
+id: relkis
+settings:
+- {id: rk-h-look, type: heading, level: 1, title: Look, title.ru: Облик, collapsed: false}
+- {id: rk-look-info, type: info-text, description: 'A look chosen here and one chosen in the Look window of the RELISA Nebula plugin stay in step, change either and the other follows. “As in RELISA Nebula” leaves the choice to the plugin. Without the plugin, dark mode shows Cosmos and light mode shows Washi.', description.ru: 'Облик здесь и в окне «Облик» плагина RELISA Nebula связан, поменяешь в одном месте, и второе подтянется. «As in RELISA Nebula» оставляет выбор плагину. Без плагина в тёмной схеме будет Космос, в светлой — Washi.'}
+- id: rk-dark
+  type: class-select
+  title: Look in dark mode
+  title.ru: Облик в тёмной схеме
+  allowEmpty: false
+  default: rk-dark-auto
+  options:
+  - {label: As in RELISA Nebula (Cosmos without it), value: rk-dark-auto}
+  - {label: Cosmos, value: rk-dark-cosmos}
+  - {label: Ink Cosmos, value: rk-dark-ink}
+  - {label: Kintsugi, value: rk-dark-kintsugi}
+  - {label: Sakura · night, value: rk-dark-sakura}
+  - {label: Indigo, value: rk-dark-indigo}
+  - {label: Moss, value: rk-dark-moss}
+  - {label: Graphite, value: rk-dark-graphite}
+  - {label: Kira-kira, value: rk-dark-kira}
+  - {label: Washi (paper in dark mode), value: rk-dark-washi}
+- id: rk-light
+  type: class-select
+  title: Look in light mode
+  title.ru: Облик в светлой схеме
+  allowEmpty: false
+  default: rk-light-auto
+  options:
+  - {label: As in RELISA Nebula (Washi without it), value: rk-light-auto}
+  - {label: Washi, value: rk-light-washi}
+  - {label: Sakura · day, value: rk-light-sakura}
+  - {label: Yuki, value: rk-light-yuki}
+- id: rk-mark
+  type: class-select
+  title: Mark on an empty tab
+  title.ru: Знак на пустой вкладке
+  allowEmpty: false
+  default: rk-mk-auto
+  options:
+  - {label: As the look has it, value: rk-mk-auto}
+  - {label: Star, value: rk-mk-star}
+  - {label: Nebula, value: rk-mk-nebula}
+  - {label: Orbit, value: rk-mk-orbit}
+  - {label: Hanko, value: rk-mk-hanko}
+  - {label: Kinpaku, value: rk-mk-leaf}
+  - {label: Maki-e, value: rk-mk-inlay}
+  - {label: Seal, value: rk-mk-inkan}
+  - {label: Ink, value: rk-mk-sumi}
+  - {label: Cinnabar, value: rk-mk-shu}
+  - {label: Sakura seal, value: rk-mk-blossom}
+  - {label: Bow, value: rk-mk-bow}
+  - {label: No mark, value: rk-mk-none}
+- {id: rk-h-ui, type: heading, level: 1, title: Interface, title.ru: Интерфейс, collapsed: true}
+- {id: rk-font-display, type: variable-text, title: Heading font, title.ru: Шрифт заголовков, description: Any font installed on the device. The reset button brings Spectral back., description.ru: 'Любой шрифт, установленный на устройстве. Кнопка сброса вернёт Spectral.', default: '''Nebula Spectral'', Spectral, Georgia, serif'}
+- {id: rk-line-width, type: variable-number-slider, title: Line width, title.ru: Ширина строки, description: 'In rem, when “Readable line length” is on.', description.ru: 'В rem, когда включена «Читаемая длина строки».', default: 44, min: 32, max: 72, step: 1, format: rem}
+- {id: rk-radius, type: variable-number-slider, title: Corner radius, title.ru: Скругление углов, description: 'Buttons, fields, menus and windows, in px.', description.ru: 'Кнопки, поля, меню и окна, в px.', default: 3, min: 0, max: 12, step: 1, format: px}
+- {id: rk-no-haze, type: class-toggle, title: No haze above the note, title.ru: Без дымки над заметкой, default: false}
+- {id: rk-no-rise, type: class-toggle, title: The title does not rise when a note opens, title.ru: Заголовок не всплывает при открытии заметки, default: false}
+- {id: rk-no-tab-line, type: class-toggle, title: No line on the active tab, title.ru: Без линии у активной вкладки, default: false}
+- {id: rk-plain-markers, type: class-toggle, title: List markers in one colour, title.ru: Маркеры списков одним цветом, default: false}
+- {id: rk-plain-sections, type: class-toggle, title: Vault sections without colour, title.ru: Разделы хранилища без цвета, description: Top-level folders named “0. …” to “9. …”., description.ru: Папки верхнего уровня «0. …» – «9. …»., default: false}
+- {id: rk-no-veins, type: class-toggle, title: No coloured line along an open section, title.ru: Без цветной жилы вдоль раскрытого раздела, default: false}
+- {id: rk-kira-no-glitter, type: class-toggle, title: 'Kira-kira: no glitter on the window frame', title.ru: 'Кира-кира: без блёсток на рамке окна', default: false}
+- {id: rk-kira-no-dots, type: class-toggle, title: 'Kira-kira: no polka dots, hearts and rhinestones', title.ru: 'Кира-кира: без горошка, сердечек и страз', default: false}
+- {id: rk-h-colours, type: heading, level: 1, title: Colours, title.ru: Цвета, collapsed: true, description: Each look keeps colours of its own. The reset button next to a colour brings the look’s colour back., description.ru: У каждого облика свои цвета. Кнопка сброса рядом с цветом возвращает цвет облика.}
+- {id: rk-h-cosmos, type: heading, level: 2, title: Cosmos, title.ru: Космос, description: 'Deep violet and gold, a quiet haze above the note.', description.ru: 'Глубокий фиолет и золото, тихая дымка над заметкой.', collapsed: true}
+- {id: rk-cosmos-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#04020a'}
+- {id: rk-cosmos-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#070312'}
+- {id: rk-cosmos-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0a0518'}
+- {id: rk-cosmos-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#0f0820'}
+- {id: rk-cosmos-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#150c2a'}
+- {id: rk-cosmos-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#f1ebf7'}
+- {id: rk-cosmos-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#bdb4cc'}
+- {id: rk-cosmos-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#9189a4'}
+- {id: rk-cosmos-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#e8e0f61c', opacity: true}
+- id: rk-cosmos-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#ffc95c'
+  alt-format:
+  - {id: rk-cosmos-accent-rgb, format: rgb-values}
+- {id: rk-cosmos-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ffc95c'}
+- {id: rk-h-ink, type: heading, level: 2, title: Ink Cosmos, title.ru: Космос · Чернильный, description: 'A colder night, ink blue and pale gold.', description.ru: 'Ночь холоднее, синие чернила и бледное золото.', collapsed: true}
+- {id: rk-ink-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#03040c'}
+- {id: rk-ink-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#060818'}
+- {id: rk-ink-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#080a1c'}
+- {id: rk-ink-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#0d1028'}
+- {id: rk-ink-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#12163a'}
+- {id: rk-ink-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#eeeaf6'}
+- {id: rk-ink-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#b9b6cf'}
+- {id: rk-ink-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#8f8ca9'}
+- {id: rk-ink-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#e8e0f61c', opacity: true}
+- id: rk-ink-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#e8c98a'
+  alt-format:
+  - {id: rk-ink-accent-rgb, format: rgb-values}
+- {id: rk-ink-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#e8c98a'}
+- {id: rk-h-kintsugi, type: heading, level: 2, title: Kintsugi, title.ru: Кинцуги, description: 'Black lacquer mended with gold, a touch of cinnabar.', description.ru: Чёрный лак с золотыми швами и каплей киновари., collapsed: true}
+- {id: rk-kintsugi-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#070504'}
+- {id: rk-kintsugi-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#0a0705'}
+- {id: rk-kintsugi-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0e0a07'}
+- {id: rk-kintsugi-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#140e0a'}
+- {id: rk-kintsugi-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#1b130d'}
+- {id: rk-kintsugi-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#f1e8d8'}
+- {id: rk-kintsugi-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#bfb29b'}
+- {id: rk-kintsugi-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#978a74'}
+- {id: rk-kintsugi-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#e6be7821', opacity: true}
+- id: rk-kintsugi-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#e6b75c'
+  alt-format:
+  - {id: rk-kintsugi-accent-rgb, format: rgb-values}
+- {id: rk-kintsugi-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#e6b75c'}
+- {id: rk-h-sakura, type: heading, level: 2, title: Sakura · night, title.ru: Сакура · ночь, description: 'Plum-black night, cherry pink and lantern gold.', description.ru: 'Сливовая ночь, розовая сакура и золото фонарей.', collapsed: true}
+- {id: rk-sakura-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#0b0509'}
+- {id: rk-sakura-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#10070d'}
+- {id: rk-sakura-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#150a12'}
+- {id: rk-sakura-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#1c0e18'}
+- {id: rk-sakura-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#241321'}
+- {id: rk-sakura-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#f8eaf1'}
+- {id: rk-sakura-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#d4bccb'}
+- {id: rk-sakura-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#a8909f'}
+- {id: rk-sakura-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#ffc4e21c', opacity: true}
+- id: rk-sakura-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#ff8fbf'
+  alt-format:
+  - {id: rk-sakura-accent-rgb, format: rgb-values}
+- {id: rk-sakura-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ffa5c9'}
+- {id: rk-h-indigo, type: heading, level: 2, title: Indigo, title.ru: Индиго, description: Indigo-dyed cloth and silver., description.ru: 'Ткань, окрашенная индиго, и серебро.', collapsed: true}
+- {id: rk-indigo-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#03060e'}
+- {id: rk-indigo-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#050a16'}
+- {id: rk-indigo-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#08101f'}
+- {id: rk-indigo-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#0c1628'}
+- {id: rk-indigo-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#111d33'}
+- {id: rk-indigo-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#e8eef8'}
+- {id: rk-indigo-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#b0bdd2'}
+- {id: rk-indigo-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#8796ae'}
+- {id: rk-indigo-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#c8dcff1c', opacity: true}
+- id: rk-indigo-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#8aa8ff'
+  alt-format:
+  - {id: rk-indigo-accent-rgb, format: rgb-values}
+- {id: rk-indigo-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#9db8ff'}
+- {id: rk-h-moss, type: heading, level: 2, title: Moss, title.ru: Мох, description: A moss garden at dusk and old bronze., description.ru: Сад мха в сумерках и старая бронза., collapsed: true}
+- {id: rk-moss-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#040703'}
+- {id: rk-moss-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#070b06'}
+- {id: rk-moss-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0a0f09'}
+- {id: rk-moss-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#0f150d'}
+- {id: rk-moss-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#151d12'}
+- {id: rk-moss-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#ecefe2'}
+- {id: rk-moss-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#b8bfa8'}
+- {id: rk-moss-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#8e967f'}
+- {id: rk-moss-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#d2e1b41c', opacity: true}
+- id: rk-moss-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#c9955a'
+  alt-format:
+  - {id: rk-moss-accent-rgb, format: rgb-values}
+- {id: rk-moss-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#d6a76a'}
+- {id: rk-h-graphite, type: heading, level: 2, title: Graphite, title.ru: Графит, description: Pure sumi ink with one cinnabar accent., description.ru: Чистая тушь сумі и один киноварный акцент., collapsed: true}
+- {id: rk-graphite-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#050505'}
+- {id: rk-graphite-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#0a0a0a'}
+- {id: rk-graphite-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0f0f0f'}
+- {id: rk-graphite-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#151515'}
+- {id: rk-graphite-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#1c1c1c'}
+- {id: rk-graphite-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#ececec'}
+- {id: rk-graphite-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#b8b8b8'}
+- {id: rk-graphite-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#8f8f8f'}
+- {id: rk-graphite-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#ffffff1a', opacity: true}
+- id: rk-graphite-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#ee6247'
+  alt-format:
+  - {id: rk-graphite-accent-rgb, format: rgb-values}
+- {id: rk-graphite-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#f28a70'}
+- {id: rk-h-kira, type: heading, level: 2, title: Kira-kira, title.ru: Кира-кира, description: 'Glossy black, hot pink, glitter on the frame and a rhinestone bow.', description.ru: 'Чёрный глянец, ярко-розовый, блёстки по рамке и бантик в стразах.', collapsed: true}
+- {id: rk-kira-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#07050a'}
+- {id: rk-kira-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#0b0710'}
+- {id: rk-kira-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#100a14'}
+- {id: rk-kira-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#170e1d'}
+- {id: rk-kira-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#1f1226'}
+- {id: rk-kira-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#fdeef6'}
+- {id: rk-kira-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#e0c4d6'}
+- {id: rk-kira-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#b493aa'}
+- {id: rk-kira-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#ff8cc829', opacity: true}
+- id: rk-kira-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#ff4fa3'
+  alt-format:
+  - {id: rk-kira-accent-rgb, format: rgb-values}
+- {id: rk-kira-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ff7ab8'}
+- {id: rk-h-washi, type: heading, level: 2, title: Washi, title.ru: Washi, description: 'Rice paper, sumi ink and a cinnabar seal.', description.ru: 'Рисовая бумага, тушь и киноварная печать.', collapsed: true}
+- {id: rk-washi-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#e4e2da'}
+- {id: rk-washi-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#eeede8'}
+- {id: rk-washi-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#f7f6f1'}
+- {id: rk-washi-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#efede6'}
+- {id: rk-washi-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#fbfaf6'}
+- {id: rk-washi-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#1d1c1a'}
+- {id: rk-washi-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#4a463f'}
+- {id: rk-washi-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#6a655b'}
+- {id: rk-washi-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#d4d0c5', opacity: true}
+- id: rk-washi-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#b03a24'
+  alt-format:
+  - {id: rk-washi-accent-rgb, format: rgb-values}
+- {id: rk-washi-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#a8341f'}
+- {id: rk-h-sakura-day, type: heading, level: 2, title: Sakura · day, title.ru: Сакура · день, description: 'Pale pink paper, ink and a blossom seal.', description.ru: 'Бледно-розовая бумага, тушь и печать-сакура.', collapsed: true}
+- {id: rk-sakura-day-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#f1e2e6'}
+- {id: rk-sakura-day-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#f7ecef'}
+- {id: rk-sakura-day-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#fdf6f7'}
+- {id: rk-sakura-day-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#f8eaee'}
+- {id: rk-sakura-day-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#fffafb'}
+- {id: rk-sakura-day-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#22161b'}
+- {id: rk-sakura-day-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#4e3a43'}
+- {id: rk-sakura-day-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#6e5862'}
+- {id: rk-sakura-day-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#ecd3db', opacity: true}
+- id: rk-sakura-day-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#b8336a'
+  alt-format:
+  - {id: rk-sakura-day-accent-rgb, format: rgb-values}
+- {id: rk-sakura-day-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#a82f5f'}
+- {id: rk-h-yuki, type: heading, level: 2, title: Yuki, title.ru: Юки, description: Fresh snow and blue-grey ink., description.ru: Свежий снег и серо-голубая тушь., collapsed: true}
+- {id: rk-yuki-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#e3e8ee'}
+- {id: rk-yuki-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#eef2f6'}
+- {id: rk-yuki-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#f8fafc'}
+- {id: rk-yuki-bg-alt, type: variable-color, title: Fields and code, title.ru: Поля и код, format: hex, default: '#eef2f6'}
+- {id: rk-yuki-raised, type: variable-color, title: Menus and windows, title.ru: Меню и окна, format: hex, default: '#ffffff'}
+- {id: rk-yuki-text, type: variable-color, title: Text, title.ru: Текст, format: hex, default: '#1b2330'}
+- {id: rk-yuki-text-2, type: variable-color, title: Secondary text, title.ru: Второй текст, format: hex, default: '#3e4a5c'}
+- {id: rk-yuki-text-3, type: variable-color, title: Captions, title.ru: Подписи, format: hex, default: '#5f6b7d'}
+- {id: rk-yuki-line, type: variable-color, title: Lines, title.ru: Линии, format: hex, default: '#d5dce5', opacity: true}
+- id: rk-yuki-accent
+  type: variable-color
+  title: Accent
+  title.ru: Акцент
+  format: hex
+  default: '#3d5f8a'
+  alt-format:
+  - {id: rk-yuki-accent-rgb, format: rgb-values}
+- {id: rk-yuki-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#34557e'}
+- {id: rk-h-sections, type: heading, level: 2, title: Vault sections, title.ru: Разделы хранилища, collapsed: true, description: 'Top-level folders named “0. …” to “9. …”: one set for dark mode and one for light. The defaults are those of Cosmos and Washi.', description.ru: 'Папки верхнего уровня «0. …» – «9. …»: один набор для тёмной схемы и один для светлой. По умолчанию — цвета Космоса и Washi.'}
+- {id: rk-sec-0, type: variable-themed-color, title: Section 0, title.ru: Раздел 0, format: hex, default-light: '#b8402a', default-dark: '#ff3fa4'}
+- {id: rk-sec-1, type: variable-themed-color, title: Section 1, title.ru: Раздел 1, format: hex, default-light: '#3d5f9e', default-dark: '#7f8cff'}
+- {id: rk-sec-2, type: variable-themed-color, title: Section 2, title.ru: Раздел 2, format: hex, default-light: '#a8782a', default-dark: '#ff6a2a'}
+- {id: rk-sec-3, type: variable-themed-color, title: Section 3, title.ru: Раздел 3, format: hex, default-light: '#2f7a68', default-dark: '#d047f6'}
+- {id: rk-sec-4, type: variable-themed-color, title: Section 4, title.ru: Раздел 4, format: hex, default-light: '#a33d62', default-dark: '#ffa07a'}
+- {id: rk-sec-5, type: variable-themed-color, title: Section 5, title.ru: Раздел 5, format: hex, default-light: '#5e7f2e', default-dark: '#b58eed'}
+- {id: rk-sec-6, type: variable-themed-color, title: Section 6, title.ru: Раздел 6, format: hex, default-light: '#6b5d4f', default-dark: '#e8264a'}
+- {id: rk-sec-7, type: variable-themed-color, title: Section 7, title.ru: Раздел 7, format: hex, default-light: '#2f6f8e', default-dark: '#f6b3ff'}
+- {id: rk-sec-8, type: variable-themed-color, title: Section 8, title.ru: Раздел 8, format: hex, default-light: '#6f55a0', default-dark: '#ff8fb4'}
+- {id: rk-sec-9, type: variable-themed-color, title: Section 9, title.ru: Раздел 9, format: hex, default-light: '#a2562a', default-dark: '#c4589a'}
+*/
 
 @font-face {
   font-family: 'Nebula Spectral';
@@ -20,27 +310,33 @@
 
 body.theme-dark, body.theme-light {
   --nt-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='17 16 70 80'%3E%3Cpath d='M25.1 88.4L29.7 84.3L34.0 80.1L37.1 76.5L39.3 73.5L40.8 71.1L42.5 67.8L44.1 63.5L45.2 58.5L45.5 58.0L46.1 57.8L46.6 57.9L46.9 58.2L53.3 66.9L57.0 71.5L60.6 75.1L64.3 78.2L65.8 79.1L67.8 80.0L71.3 81.2L75.2 82.1L82.6 83.4L80.6 82.7L79.0 82.0L76.2 80.0L74.2 78.2L69.0 72.9L51.7 58.1L50.0 56.6L49.7 56.1L49.8 55.4L50.4 54.9L55.2 54.0L58.5 53.1L62.3 51.8L64.7 50.7L67.5 49.2L69.6 47.7L71.5 46.0L72.7 44.6L74.1 42.4L75.0 40.0L75.5 37.6L75.6 35.2L75.2 32.9L74.3 30.6L73.0 28.6L71.3 26.9L69.8 25.8L68.0 25.0L66.1 24.5L63.9 24.1L61.1 23.9L58.4 23.9L45.6 24.5L40.7 24.4L34.6 23.9L31.3 23.3L28.2 22.4L25.0 21.0L27.1 22.5L31.0 25.8L33.2 27.4L35.3 28.6L37.7 29.5L38.2 29.9L38.3 30.3L38.2 34.6L38.4 42.8L38.2 50.3L37.7 55.5L36.6 62.5L35.2 68.6L33.5 73.4L31.3 78.2L28.4 83.2L26.1 86.5L24.4 88.5ZM45.4 30.9L45.6 30.4L46.2 29.9L55.8 29.4L61.4 29.4L63.6 29.6L65.2 30.0L66.2 30.4L67.3 31.1L68.2 32.0L68.8 33.0L69.2 34.1L69.5 35.6L69.5 37.0L69.2 38.3L68.7 39.7L68.1 40.7L66.5 42.6L64.4 44.4L61.7 46.1L58.1 47.7L54.6 48.8L50.4 49.6L47.2 50.1L46.7 50.0L46.2 49.7L46.0 49.2L46.1 43.7L46.1 38.1L45.9 34.2Z' fill-rule='evenodd'/%3E%3C/svg%3E");
-  --nt-mark-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='17 16 70 80'%3E%3Cpath d='M25.1 88.4L29.7 84.3L34.0 80.1L37.1 76.5L39.3 73.5L40.8 71.1L42.5 67.8L44.1 63.5L45.2 58.5L45.5 58.0L46.1 57.8L46.6 57.9L46.9 58.2L53.3 66.9L57.0 71.5L60.6 75.1L64.3 78.2L65.8 79.1L67.8 80.0L71.3 81.2L75.2 82.1L82.6 83.4L80.6 82.7L79.0 82.0L76.2 80.0L74.2 78.2L69.0 72.9L51.7 58.1L50.0 56.6L49.7 56.1L49.8 55.4L50.4 54.9L55.2 54.0L58.5 53.1L62.3 51.8L64.7 50.7L67.5 49.2L69.6 47.7L71.5 46.0L72.7 44.6L74.1 42.4L75.0 40.0L75.5 37.6L75.6 35.2L75.2 32.9L74.3 30.6L73.0 28.6L71.3 26.9L69.8 25.8L68.0 25.0L66.1 24.5L63.9 24.1L61.1 23.9L58.4 23.9L45.6 24.5L40.7 24.4L34.6 23.9L31.3 23.3L28.2 22.4L25.0 21.0L27.1 22.5L31.0 25.8L33.2 27.4L35.3 28.6L37.7 29.5L38.2 29.9L38.3 30.3L38.2 34.6L38.4 42.8L38.2 50.3L37.7 55.5L36.6 62.5L35.2 68.6L33.5 73.4L31.3 78.2L28.4 83.2L26.1 86.5L24.4 88.5ZM45.4 30.9L45.6 30.4L46.2 29.9L55.8 29.4L61.4 29.4L63.6 29.6L65.2 30.0L66.2 30.4L67.3 31.1L68.2 32.0L68.8 33.0L69.2 34.1L69.5 35.6L69.5 37.0L69.2 38.3L68.7 39.7L68.1 40.7L66.5 42.6L64.4 44.4L61.7 46.1L58.1 47.7L54.6 48.8L50.4 49.6L47.2 50.1L46.7 50.0L46.2 49.7L46.0 49.2L46.1 43.7L46.1 38.1L45.9 34.2Z' fill-rule='evenodd' fill='%23f0404f'/%3E%3C/svg%3E");
-  --nt-mark-fill-hi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='17 16 70 80'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0.2' y1='0' x2='0.8' y2='1'%3E%3Cstop offset='0' stop-color='%23ff8a94'/%3E%3Cstop offset='0.45' stop-color='%23f0404f'/%3E%3Cstop offset='1' stop-color='%23c21f31'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M25.1 88.4L29.7 84.3L34.0 80.1L37.1 76.5L39.3 73.5L40.8 71.1L42.5 67.8L44.1 63.5L45.2 58.5L45.5 58.0L46.1 57.8L46.6 57.9L46.9 58.2L53.3 66.9L57.0 71.5L60.6 75.1L64.3 78.2L65.8 79.1L67.8 80.0L71.3 81.2L75.2 82.1L82.6 83.4L80.6 82.7L79.0 82.0L76.2 80.0L74.2 78.2L69.0 72.9L51.7 58.1L50.0 56.6L49.7 56.1L49.8 55.4L50.4 54.9L55.2 54.0L58.5 53.1L62.3 51.8L64.7 50.7L67.5 49.2L69.6 47.7L71.5 46.0L72.7 44.6L74.1 42.4L75.0 40.0L75.5 37.6L75.6 35.2L75.2 32.9L74.3 30.6L73.0 28.6L71.3 26.9L69.8 25.8L68.0 25.0L66.1 24.5L63.9 24.1L61.1 23.9L58.4 23.9L45.6 24.5L40.7 24.4L34.6 23.9L31.3 23.3L28.2 22.4L25.0 21.0L27.1 22.5L31.0 25.8L33.2 27.4L35.3 28.6L37.7 29.5L38.2 29.9L38.3 30.3L38.2 34.6L38.4 42.8L38.2 50.3L37.7 55.5L36.6 62.5L35.2 68.6L33.5 73.4L31.3 78.2L28.4 83.2L26.1 86.5L24.4 88.5ZM45.4 30.9L45.6 30.4L46.2 29.9L55.8 29.4L61.4 29.4L63.6 29.6L65.2 30.0L66.2 30.4L67.3 31.1L68.2 32.0L68.8 33.0L69.2 34.1L69.5 35.6L69.5 37.0L69.2 38.3L68.7 39.7L68.1 40.7L66.5 42.6L64.4 44.4L61.7 46.1L58.1 47.7L54.6 48.8L50.4 49.6L47.2 50.1L46.7 50.0L46.2 49.7L46.0 49.2L46.1 43.7L46.1 38.1L45.9 34.2Z' fill-rule='evenodd' fill='url(%23g)'/%3E%3C/svg%3E");
   --nt-mark-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='17 16 70 80'%3E%3Cpath d='M25.1 88.4L29.7 84.3L34.0 80.1L37.1 76.5L39.3 73.5L40.8 71.1L42.5 67.8L44.1 63.5L45.2 58.5L45.5 58.0L46.1 57.8L46.6 57.9L46.9 58.2L53.3 66.9L57.0 71.5L60.6 75.1L64.3 78.2L65.8 79.1L67.8 80.0L71.3 81.2L75.2 82.1L82.6 83.4L80.6 82.7L79.0 82.0L76.2 80.0L74.2 78.2L69.0 72.9L51.7 58.1L50.0 56.6L49.7 56.1L49.8 55.4L50.4 54.9L55.2 54.0L58.5 53.1L62.3 51.8L64.7 50.7L67.5 49.2L69.6 47.7L71.5 46.0L72.7 44.6L74.1 42.4L75.0 40.0L75.5 37.6L75.6 35.2L75.2 32.9L74.3 30.6L73.0 28.6L71.3 26.9L69.8 25.8L68.0 25.0L66.1 24.5L63.9 24.1L61.1 23.9L58.4 23.9L45.6 24.5L40.7 24.4L34.6 23.9L31.3 23.3L28.2 22.4L25.0 21.0L27.1 22.5L31.0 25.8L33.2 27.4L35.3 28.6L37.7 29.5L38.2 29.9L38.3 30.3L38.2 34.6L38.4 42.8L38.2 50.3L37.7 55.5L36.6 62.5L35.2 68.6L33.5 73.4L31.3 78.2L28.4 83.2L26.1 86.5L24.4 88.5ZM45.4 30.9L45.6 30.4L46.2 29.9L55.8 29.4L61.4 29.4L63.6 29.6L65.2 30.0L66.2 30.4L67.3 31.1L68.2 32.0L68.8 33.0L69.2 34.1L69.5 35.6L69.5 37.0L69.2 38.3L68.7 39.7L68.1 40.7L66.5 42.6L64.4 44.4L61.7 46.1L58.1 47.7L54.6 48.8L50.4 49.6L47.2 50.1L46.7 50.0L46.2 49.7L46.0 49.2L46.1 43.7L46.1 38.1L45.9 34.2Z' fill-rule='evenodd' fill='%23f6ecda'/%3E%3C/svg%3E");
   --nt-mark-leaf: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='17 16 70 80'%3E%3Cdefs%3E%3ClinearGradient id='l' x1='0.15' y1='0' x2='0.85' y2='1'%3E%3Cstop offset='0' stop-color='%23f7e3a6'/%3E%3Cstop offset='0.5' stop-color='%23e2b95a'/%3E%3Cstop offset='1' stop-color='%23bd8d34'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M25.1 88.4L29.7 84.3L34.0 80.1L37.1 76.5L39.3 73.5L40.8 71.1L42.5 67.8L44.1 63.5L45.2 58.5L45.5 58.0L46.1 57.8L46.6 57.9L46.9 58.2L53.3 66.9L57.0 71.5L60.6 75.1L64.3 78.2L65.8 79.1L67.8 80.0L71.3 81.2L75.2 82.1L82.6 83.4L80.6 82.7L79.0 82.0L76.2 80.0L74.2 78.2L69.0 72.9L51.7 58.1L50.0 56.6L49.7 56.1L49.8 55.4L50.4 54.9L55.2 54.0L58.5 53.1L62.3 51.8L64.7 50.7L67.5 49.2L69.6 47.7L71.5 46.0L72.7 44.6L74.1 42.4L75.0 40.0L75.5 37.6L75.6 35.2L75.2 32.9L74.3 30.6L73.0 28.6L71.3 26.9L69.8 25.8L68.0 25.0L66.1 24.5L63.9 24.1L61.1 23.9L58.4 23.9L45.6 24.5L40.7 24.4L34.6 23.9L31.3 23.3L28.2 22.4L25.0 21.0L27.1 22.5L31.0 25.8L33.2 27.4L35.3 28.6L37.7 29.5L38.2 29.9L38.3 30.3L38.2 34.6L38.4 42.8L38.2 50.3L37.7 55.5L36.6 62.5L35.2 68.6L33.5 73.4L31.3 78.2L28.4 83.2L26.1 86.5L24.4 88.5ZM45.4 30.9L45.6 30.4L46.2 29.9L55.8 29.4L61.4 29.4L63.6 29.6L65.2 30.0L66.2 30.4L67.3 31.1L68.2 32.0L68.8 33.0L69.2 34.1L69.5 35.6L69.5 37.0L69.2 38.3L68.7 39.7L68.1 40.7L66.5 42.6L64.4 44.4L61.7 46.1L58.1 47.7L54.6 48.8L50.4 49.6L47.2 50.1L46.7 50.0L46.2 49.7L46.0 49.2L46.1 43.7L46.1 38.1L45.9 34.2Z' fill-rule='evenodd' fill='url(%23l)'/%3E%3C/svg%3E");
   --nt-mark-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='17 16 70 80'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0.2' y1='0' x2='0.8' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='0.55' stop-color='%23efe6ff'/%3E%3Cstop offset='1' stop-color='%23c9b2ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M25.1 88.4L29.7 84.3L34.0 80.1L37.1 76.5L39.3 73.5L40.8 71.1L42.5 67.8L44.1 63.5L45.2 58.5L45.5 58.0L46.1 57.8L46.6 57.9L46.9 58.2L53.3 66.9L57.0 71.5L60.6 75.1L64.3 78.2L65.8 79.1L67.8 80.0L71.3 81.2L75.2 82.1L82.6 83.4L80.6 82.7L79.0 82.0L76.2 80.0L74.2 78.2L69.0 72.9L51.7 58.1L50.0 56.6L49.7 56.1L49.8 55.4L50.4 54.9L55.2 54.0L58.5 53.1L62.3 51.8L64.7 50.7L67.5 49.2L69.6 47.7L71.5 46.0L72.7 44.6L74.1 42.4L75.0 40.0L75.5 37.6L75.6 35.2L75.2 32.9L74.3 30.6L73.0 28.6L71.3 26.9L69.8 25.8L68.0 25.0L66.1 24.5L63.9 24.1L61.1 23.9L58.4 23.9L45.6 24.5L40.7 24.4L34.6 23.9L31.3 23.3L28.2 22.4L25.0 21.0L27.1 22.5L31.0 25.8L33.2 27.4L35.3 28.6L37.7 29.5L38.2 29.9L38.3 30.3L38.2 34.6L38.4 42.8L38.2 50.3L37.7 55.5L36.6 62.5L35.2 68.6L33.5 73.4L31.3 78.2L28.4 83.2L26.1 86.5L24.4 88.5ZM45.4 30.9L45.6 30.4L46.2 29.9L55.8 29.4L61.4 29.4L63.6 29.6L65.2 30.0L66.2 30.4L67.3 31.1L68.2 32.0L68.8 33.0L69.2 34.1L69.5 35.6L69.5 37.0L69.2 38.3L68.7 39.7L68.1 40.7L66.5 42.6L64.4 44.4L61.7 46.1L58.1 47.7L54.6 48.8L50.4 49.6L47.2 50.1L46.7 50.0L46.2 49.7L46.0 49.2L46.1 43.7L46.1 38.1L45.9 34.2Z' fill-rule='evenodd' fill='url(%23s)'/%3E%3C/svg%3E");
+  --nt-bow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='r' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ff9ccb'/%3E%3Cstop offset='1' stop-color='%23e3277c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='%23c4165f' d='M28 34 22 55l6-3 3 6 2-22zM36 34l6 21-6-3-3 6-2-22z'/%3E%3Cpath fill='url(%23r)' d='M30 30C21 13 5 13 6 27s16 13 24 7zM34 30c9-17 25-17 24-3s-16 13-24 7z'/%3E%3Cpath fill='%23fff' fill-opacity='.35' d='M10 25c1-6 7-8 13-5-6 0-10 2-13 5zM54 25c-1-6-7-8-13-5 6 0 10 2 13 5z'/%3E%3Crect x='26.5' y='25.5' width='11' height='13' rx='4.5' fill='%23ff5fa8' stroke='%23fff' stroke-opacity='.9' stroke-width='1.3'/%3E%3Cg fill='%23fff'%3E%3Ccircle cx='13' cy='28' r='1.5'/%3E%3Ccircle cx='19' cy='22' r='1.2'/%3E%3Ccircle cx='24' cy='27.5' r='1'/%3E%3Ccircle cx='51' cy='28' r='1.5'/%3E%3Ccircle cx='45' cy='22' r='1.2'/%3E%3Ccircle cx='40' cy='27.5' r='1'/%3E%3Ccircle cx='32' cy='29.5' r='1.3'/%3E%3Ccircle cx='29.6' cy='34' r='.9'/%3E%3Ccircle cx='34.4' cy='34' r='.9'/%3E%3C/g%3E%3C/svg%3E");
+  --nt-glitter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='%23ff5fa8' fill-opacity='.55'%3E%3Ccircle cx='6' cy='9' r='.9'/%3E%3Ccircle cx='31' cy='4' r='.6'/%3E%3Ccircle cx='42' cy='27' r='.8'/%3E%3Ccircle cx='17' cy='38' r='.7'/%3E%3Ccircle cx='27' cy='21' r='.5'/%3E%3Ccircle cx='9' cy='29' r='.5'/%3E%3Ccircle cx='38' cy='44' r='.6'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.7'%3E%3Ccircle cx='22' cy='12' r='.5'/%3E%3Ccircle cx='45' cy='12' r='.5'/%3E%3Ccircle cx='3' cy='44' r='.6'/%3E%3Cpath d='M34 31l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7zM12 18l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5z'/%3E%3C/g%3E%3C/svg%3E");
+  --nt-heart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E");
 }
 
 body.theme-dark {
 color-scheme: dark;
---nt-deep: #04020a;      --nt-side: #070312;      --nt-bg: #0a0518;        --nt-bg-alt: #0f0820;    --nt-raised: #150c2a;    --nt-text: #f1ebf7;
---nt-text-2: #bdb4cc;
---nt-text-3: #9189a4;
+--nt-deep: var(--rk-cosmos-deep, #04020a);
+--nt-side: var(--rk-cosmos-side, #070312);
+--nt-bg: var(--rk-cosmos-bg, #0a0518);
+--nt-bg-alt: var(--rk-cosmos-bg-alt, #0f0820);
+--nt-raised: var(--rk-cosmos-raised, #150c2a);
+--nt-text: var(--rk-cosmos-text, #f1ebf7);
+--nt-text-2: var(--rk-cosmos-text-2, #bdb4cc);
+--nt-text-3: var(--rk-cosmos-text-3, #9189a4);
+--nt-line: var(--rk-cosmos-line, rgba(232, 224, 246, 0.11));
+--nt-accent: var(--rk-cosmos-accent, #ffc95c);
+--nt-link: var(--rk-cosmos-link, #ffc95c);
+--nt-accent-rgb: var(--rk-cosmos-accent-rgb, 255, 201, 92);
 --nt-text-4: #675f7c;
---nt-line: rgba(232, 224, 246, 0.11);
 --nt-line-strong: rgba(232, 224, 246, 0.24);
 --nt-hover: rgba(240, 232, 255, 0.06);
---nt-accent: #ffc95c;
---nt-accent-hover: #ffd985;
---nt-accent-rgb: 255, 201, 92;
 --nt-accent-ink: #1a1206;
---nt-link: #ffc95c;
+--nt-lift: #fff 22%;
 --nt-spark: #ff3fa4;
 --nt-rose: #ff6b9a;
 --nt-violet: #9d6bff;
@@ -53,7 +349,6 @@ color-scheme: dark;
 --nt-shadow: 0 24px 64px rgba(2, 1, 8, 0.7);
 --nt-paper: #ece6dc;
 --nt-paper-ink: #15121c;
---nt-tile: linear-gradient(160deg, #2e0a11 0%, #150609 100%);
 --nt-sem-red: 255, 107, 122;
 --nt-sem-orange: 255, 160, 92;
 --nt-sem-yellow: 255, 201, 92;
@@ -62,46 +357,377 @@ color-scheme: dark;
 --nt-sem-blue: 142, 166, 255;
 --nt-sem-purple: 185, 150, 255;
 --nt-sem-pink: 255, 107, 154;
---nt-sec-0: #ff3fa4; --nt-sec-1: #7f8cff; --nt-sec-2: #ff6a2a; --nt-sec-3: #d047f6; --nt-sec-4: #ffa07a;
---nt-sec-5: #b58eed; --nt-sec-6: #e8264a; --nt-sec-7: #f6b3ff; --nt-sec-8: #ff8fb4; --nt-sec-9: #c4589a;
+--nt-seal-ring: rgba(233, 196, 106, 0.6);
+--nt-seal-drop: 0 12px 28px rgba(0, 0, 0, 0.35);
+--nt-mk-tone: var(--nt-accent);
+--nt-sec-0: var(--rk-sec-0, #ff3fa4);
+--nt-sec-1: var(--rk-sec-1, #7f8cff);
+--nt-sec-2: var(--rk-sec-2, #ff6a2a);
+--nt-sec-3: var(--rk-sec-3, #d047f6);
+--nt-sec-4: var(--rk-sec-4, #ffa07a);
+--nt-sec-5: var(--rk-sec-5, #b58eed);
+--nt-sec-6: var(--rk-sec-6, #e8264a);
+--nt-sec-7: var(--rk-sec-7, #f6b3ff);
+--nt-sec-8: var(--rk-sec-8, #ff8fb4);
+--nt-sec-9: var(--rk-sec-9, #c4589a);
 }
-body.theme-dark.nb-os-a {
---nt-deep: #03040c; --nt-side: #060818; --nt-bg: #080a1c; --nt-bg-alt: #0d1028; --nt-raised: #12163a;
---nt-text: #eeeaf6; --nt-text-2: #b9b6cf; --nt-text-3: #8f8ca9; --nt-text-4: #625f7e;
---nt-accent: #e8c98a; --nt-accent-hover: #f1d9a6; --nt-accent-rgb: 232, 201, 138; --nt-link: #e8c98a;
---nt-spark: #e0679f; --nt-rose: #e88aa8; --nt-violet: #8f86ff; --nt-ice: #b996ff; --nt-node: #a99cf0;
---nt-haze-1: rgba(32, 22, 84, 0.55); --nt-haze-2: rgba(86, 30, 96, 0.26);
+
+body.theme-dark.nb-os-a:not(.css-settings-manager),
+body.theme-dark.nb-os-a.rk-dark-auto,
+body.theme-dark.rk-dark-ink {
+--nt-deep: var(--rk-ink-deep, #03040c);
+--nt-side: var(--rk-ink-side, #060818);
+--nt-bg: var(--rk-ink-bg, #080a1c);
+--nt-bg-alt: var(--rk-ink-bg-alt, #0d1028);
+--nt-raised: var(--rk-ink-raised, #12163a);
+--nt-text: var(--rk-ink-text, #eeeaf6);
+--nt-text-2: var(--rk-ink-text-2, #b9b6cf);
+--nt-text-3: var(--rk-ink-text-3, #8f8ca9);
+--nt-line: var(--rk-ink-line, rgba(232, 224, 246, 0.11));
+--nt-accent: var(--rk-ink-accent, #e8c98a);
+--nt-link: var(--rk-ink-link, #e8c98a);
+--nt-accent-rgb: var(--rk-ink-accent-rgb, 232, 201, 138);
+--nt-text-4: #625f7e;
+--nt-spark: #e0679f;
+--nt-rose: #e88aa8;
+--nt-violet: #8f86ff;
+--nt-ice: #b996ff;
+--nt-node: #a99cf0;
+--nt-haze-1: rgba(32, 22, 84, 0.55);
+--nt-haze-2: rgba(86, 30, 96, 0.26);
 }
-body.theme-dark.nb-os-kintsugi {
---nt-deep: #070504; --nt-side: #0a0705; --nt-bg: #0e0a07; --nt-bg-alt: #140e0a; --nt-raised: #1b130d;
---nt-text: #f1e8d8; --nt-text-2: #bfb29b; --nt-text-3: #978a74; --nt-text-4: #6d634f;
---nt-line: rgba(230, 190, 120, 0.13); --nt-line-strong: rgba(230, 190, 120, 0.27); --nt-hover: rgba(240, 210, 160, 0.06);
---nt-accent: #e6b75c; --nt-accent-hover: #f0c878; --nt-accent-rgb: 230, 183, 92; --nt-accent-ink: #1a1206; --nt-link: #e6b75c;
---nt-spark: #e4492f; --nt-rose: #e88a6a; --nt-violet: #c9a36a; --nt-ice: #efe2c4; --nt-node: #d9b26a;
---nt-haze-1: rgba(74, 26, 14, 0.42); --nt-haze-2: rgba(42, 26, 14, 0.40);
---nt-scroll: rgba(230, 190, 120, 0.15); --nt-scroll-hover: rgba(230, 190, 120, 0.34);
+
+body.theme-dark.nb-os-kintsugi:not(.css-settings-manager),
+body.theme-dark.nb-os-kintsugi.rk-dark-auto,
+body.theme-dark.rk-dark-kintsugi {
+--nt-deep: var(--rk-kintsugi-deep, #070504);
+--nt-side: var(--rk-kintsugi-side, #0a0705);
+--nt-bg: var(--rk-kintsugi-bg, #0e0a07);
+--nt-bg-alt: var(--rk-kintsugi-bg-alt, #140e0a);
+--nt-raised: var(--rk-kintsugi-raised, #1b130d);
+--nt-text: var(--rk-kintsugi-text, #f1e8d8);
+--nt-text-2: var(--rk-kintsugi-text-2, #bfb29b);
+--nt-text-3: var(--rk-kintsugi-text-3, #978a74);
+--nt-line: var(--rk-kintsugi-line, rgba(230, 190, 120, 0.13));
+--nt-accent: var(--rk-kintsugi-accent, #e6b75c);
+--nt-link: var(--rk-kintsugi-link, #e6b75c);
+--nt-accent-rgb: var(--rk-kintsugi-accent-rgb, 230, 183, 92);
+--nt-text-4: #6d634f;
+--nt-line-strong: rgba(230, 190, 120, 0.27);
+--nt-hover: rgba(240, 210, 160, 0.06);
+--nt-spark: #e4492f;
+--nt-rose: #e88a6a;
+--nt-violet: #c9a36a;
+--nt-ice: #efe2c4;
+--nt-node: #d9b26a;
+--nt-haze-1: rgba(74, 26, 14, 0.42);
+--nt-haze-2: rgba(42, 26, 14, 0.40);
+--nt-scroll: rgba(230, 190, 120, 0.15);
+--nt-scroll-hover: rgba(230, 190, 120, 0.34);
 --nt-shadow: 0 24px 64px rgba(4, 2, 1, 0.75);
 --nt-paper: #efe4cc;
---nt-sem-red: 228, 73, 47; --nt-sem-orange: 232, 138, 106; --nt-sem-yellow: 230, 183, 92;
---nt-sem-green: 150, 200, 140; --nt-sem-cyan: 239, 226, 196; --nt-sem-blue: 201, 163, 106;
---nt-sem-purple: 217, 178, 106; --nt-sem-pink: 232, 138, 106;
---nt-sec-0: #e4492f; --nt-sec-1: #e9c46a; --nt-sec-2: #52b48c; --nt-sec-3: #5f8fe0; --nt-sec-4: #efe2c4;
---nt-sec-5: #b88ae8; --nt-sec-6: #45b4c8; --nt-sec-7: #a5c85c; --nt-sec-8: #d9803f; --nt-sec-9: #ee93b4;
+--nt-sem-red: 228, 73, 47;
+--nt-sem-orange: 232, 138, 106;
+--nt-sem-yellow: 230, 183, 92;
+--nt-sem-green: 150, 200, 140;
+--nt-sem-cyan: 239, 226, 196;
+--nt-sem-blue: 201, 163, 106;
+--nt-sem-purple: 217, 178, 106;
+--nt-sem-pink: 232, 138, 106;
+--nt-sec-0: var(--rk-sec-0, #e4492f);
+--nt-sec-1: var(--rk-sec-1, #e9c46a);
+--nt-sec-2: var(--rk-sec-2, #52b48c);
+--nt-sec-3: var(--rk-sec-3, #5f8fe0);
+--nt-sec-4: var(--rk-sec-4, #efe2c4);
+--nt-sec-5: var(--rk-sec-5, #b88ae8);
+--nt-sec-6: var(--rk-sec-6, #45b4c8);
+--nt-sec-7: var(--rk-sec-7, #a5c85c);
+--nt-sec-8: var(--rk-sec-8, #d9803f);
+--nt-sec-9: var(--rk-sec-9, #ee93b4);
 }
+
+body.theme-dark.nb-os-sakura:not(.css-settings-manager),
+body.theme-dark.nb-os-sakura.rk-dark-auto,
+body.theme-dark.rk-dark-sakura {
+--nt-deep: var(--rk-sakura-deep, #0b0509);
+--nt-side: var(--rk-sakura-side, #10070d);
+--nt-bg: var(--rk-sakura-bg, #150a12);
+--nt-bg-alt: var(--rk-sakura-bg-alt, #1c0e18);
+--nt-raised: var(--rk-sakura-raised, #241321);
+--nt-text: var(--rk-sakura-text, #f8eaf1);
+--nt-text-2: var(--rk-sakura-text-2, #d4bccb);
+--nt-text-3: var(--rk-sakura-text-3, #a8909f);
+--nt-line: var(--rk-sakura-line, rgba(255, 196, 226, 0.11));
+--nt-accent: var(--rk-sakura-accent, #ff8fbf);
+--nt-link: var(--rk-sakura-link, #ffa5c9);
+--nt-accent-rgb: var(--rk-sakura-accent-rgb, 255, 143, 191);
+--nt-text-4: #6f5a68;
+--nt-line-strong: rgba(255, 196, 226, 0.24);
+--nt-hover: rgba(255, 220, 238, 0.06);
+--nt-accent-ink: #2a0716;
+--nt-spark: #ffd27a;
+--nt-rose: #ffb3cf;
+--nt-violet: #c79bff;
+--nt-ice: #ffe0b3;
+--nt-node: #e8a6c4;
+--nt-haze-1: rgba(150, 30, 90, 0.30);
+--nt-haze-2: rgba(255, 170, 90, 0.10);
+--nt-scroll: rgba(255, 196, 226, 0.13);
+--nt-scroll-hover: rgba(255, 196, 226, 0.30);
+--nt-shadow: 0 24px 64px rgba(8, 2, 6, 0.7);
+--nt-paper: #fbe9f1;
+--nt-paper-ink: #1c0e18;
+--nt-sem-orange: 255, 170, 110;
+--nt-sem-yellow: 255, 210, 122;
+--nt-sem-green: 150, 220, 170;
+--nt-sem-cyan: 160, 225, 240;
+--nt-sem-blue: 170, 170, 255;
+--nt-sem-purple: 199, 155, 255;
+--nt-sem-pink: 255, 143, 191;
+--nt-seal-ring: rgba(255, 210, 122, 0.55);
+--nt-sec-0: var(--rk-sec-0, #ff6fa8);
+--nt-sec-1: var(--rk-sec-1, #a99cff);
+--nt-sec-2: var(--rk-sec-2, #ffb06a);
+--nt-sec-3: var(--rk-sec-3, #e07bf0);
+--nt-sec-4: var(--rk-sec-4, #ffd27a);
+--nt-sec-5: var(--rk-sec-5, #8fd6b4);
+--nt-sec-6: var(--rk-sec-6, #ff8a8a);
+--nt-sec-7: var(--rk-sec-7, #c4a3ff);
+--nt-sec-8: var(--rk-sec-8, #ffa5c9);
+--nt-sec-9: var(--rk-sec-9, #e6a0d0);
+}
+
+body.theme-dark.nb-os-indigo:not(.css-settings-manager),
+body.theme-dark.nb-os-indigo.rk-dark-auto,
+body.theme-dark.rk-dark-indigo {
+--nt-deep: var(--rk-indigo-deep, #03060e);
+--nt-side: var(--rk-indigo-side, #050a16);
+--nt-bg: var(--rk-indigo-bg, #08101f);
+--nt-bg-alt: var(--rk-indigo-bg-alt, #0c1628);
+--nt-raised: var(--rk-indigo-raised, #111d33);
+--nt-text: var(--rk-indigo-text, #e8eef8);
+--nt-text-2: var(--rk-indigo-text-2, #b0bdd2);
+--nt-text-3: var(--rk-indigo-text-3, #8796ae);
+--nt-line: var(--rk-indigo-line, rgba(200, 220, 255, 0.11));
+--nt-accent: var(--rk-indigo-accent, #8aa8ff);
+--nt-link: var(--rk-indigo-link, #9db8ff);
+--nt-accent-rgb: var(--rk-indigo-accent-rgb, 138, 168, 255);
+--nt-text-4: #5a6680;
+--nt-line-strong: rgba(200, 220, 255, 0.24);
+--nt-hover: rgba(210, 228, 255, 0.06);
+--nt-accent-ink: #050a16;
+--nt-spark: #c8d2e6;
+--nt-rose: #a8c4ff;
+--nt-violet: #b49cff;
+--nt-ice: #7fd8e8;
+--nt-node: #9fb3d9;
+--nt-haze-1: rgba(30, 60, 140, 0.32);
+--nt-haze-2: rgba(60, 40, 130, 0.20);
+--nt-scroll: rgba(200, 220, 255, 0.13);
+--nt-scroll-hover: rgba(200, 220, 255, 0.30);
+--nt-shadow: 0 24px 64px rgba(1, 3, 10, 0.7);
+--nt-paper: #e6ecf6;
+--nt-paper-ink: #08101f;
+--nt-sem-red: 255, 120, 130;
+--nt-sem-orange: 255, 170, 110;
+--nt-sem-yellow: 240, 210, 120;
+--nt-sem-green: 120, 210, 170;
+--nt-sem-cyan: 127, 216, 232;
+--nt-sem-blue: 138, 168, 255;
+--nt-sem-purple: 180, 156, 255;
+--nt-sem-pink: 240, 140, 190;
+--nt-seal-ring: rgba(200, 210, 230, 0.55);
+--nt-mk-tone: #c8d2e6;
+--nt-sec-0: var(--rk-sec-0, #7fa2ff);
+--nt-sec-1: var(--rk-sec-1, #e8c26a);
+--nt-sec-2: var(--rk-sec-2, #4fc1b0);
+--nt-sec-3: var(--rk-sec-3, #b49cff);
+--nt-sec-4: var(--rk-sec-4, #ff9a8a);
+--nt-sec-5: var(--rk-sec-5, #8fd0ff);
+--nt-sec-6: var(--rk-sec-6, #c9a0ff);
+--nt-sec-7: var(--rk-sec-7, #7fdca0);
+--nt-sec-8: var(--rk-sec-8, #ffb070);
+--nt-sec-9: var(--rk-sec-9, #9fb3d9);
+}
+
+body.theme-dark.nb-os-moss:not(.css-settings-manager),
+body.theme-dark.nb-os-moss.rk-dark-auto,
+body.theme-dark.rk-dark-moss {
+--nt-deep: var(--rk-moss-deep, #040703);
+--nt-side: var(--rk-moss-side, #070b06);
+--nt-bg: var(--rk-moss-bg, #0a0f09);
+--nt-bg-alt: var(--rk-moss-bg-alt, #0f150d);
+--nt-raised: var(--rk-moss-raised, #151d12);
+--nt-text: var(--rk-moss-text, #ecefe2);
+--nt-text-2: var(--rk-moss-text-2, #b8bfa8);
+--nt-text-3: var(--rk-moss-text-3, #8e967f);
+--nt-line: var(--rk-moss-line, rgba(210, 225, 180, 0.11));
+--nt-accent: var(--rk-moss-accent, #c9955a);
+--nt-link: var(--rk-moss-link, #d6a76a);
+--nt-accent-rgb: var(--rk-moss-accent-rgb, 201, 149, 90);
+--nt-text-4: #5f6754;
+--nt-line-strong: rgba(210, 225, 180, 0.24);
+--nt-hover: rgba(220, 235, 200, 0.06);
+--nt-accent-ink: #1a0f05;
+--nt-spark: #8fbf6a;
+--nt-rose: #c8b46a;
+--nt-violet: #9fb88a;
+--nt-ice: #a8d8c0;
+--nt-node: #a3b38a;
+--nt-haze-1: rgba(40, 80, 30, 0.30);
+--nt-haze-2: rgba(90, 70, 30, 0.18);
+--nt-scroll: rgba(210, 225, 180, 0.13);
+--nt-scroll-hover: rgba(210, 225, 180, 0.30);
+--nt-shadow: 0 24px 64px rgba(2, 4, 1, 0.7);
+--nt-paper: #ecefe2;
+--nt-paper-ink: #0a0f09;
+--nt-sem-red: 230, 110, 90;
+--nt-sem-orange: 220, 150, 90;
+--nt-sem-yellow: 210, 180, 100;
+--nt-sem-green: 143, 191, 106;
+--nt-sem-cyan: 140, 200, 180;
+--nt-sem-blue: 140, 170, 200;
+--nt-sem-purple: 180, 160, 200;
+--nt-sem-pink: 210, 140, 150;
+--nt-seal-ring: rgba(201, 149, 90, 0.55);
+--nt-sec-0: var(--rk-sec-0, #c9955a);
+--nt-sec-1: var(--rk-sec-1, #8fbf6a);
+--nt-sec-2: var(--rk-sec-2, #6ab0a0);
+--nt-sec-3: var(--rk-sec-3, #d4b86a);
+--nt-sec-4: var(--rk-sec-4, #b88a6a);
+--nt-sec-5: var(--rk-sec-5, #a8c870);
+--nt-sec-6: var(--rk-sec-6, #7aa8c0);
+--nt-sec-7: var(--rk-sec-7, #c8a080);
+--nt-sec-8: var(--rk-sec-8, #9fc490);
+--nt-sec-9: var(--rk-sec-9, #b0a070);
+}
+
+body.theme-dark.nb-os-graphite:not(.css-settings-manager),
+body.theme-dark.nb-os-graphite.rk-dark-auto,
+body.theme-dark.rk-dark-graphite {
+--nt-deep: var(--rk-graphite-deep, #050505);
+--nt-side: var(--rk-graphite-side, #0a0a0a);
+--nt-bg: var(--rk-graphite-bg, #0f0f0f);
+--nt-bg-alt: var(--rk-graphite-bg-alt, #151515);
+--nt-raised: var(--rk-graphite-raised, #1c1c1c);
+--nt-text: var(--rk-graphite-text, #ececec);
+--nt-text-2: var(--rk-graphite-text-2, #b8b8b8);
+--nt-text-3: var(--rk-graphite-text-3, #8f8f8f);
+--nt-line: var(--rk-graphite-line, rgba(255, 255, 255, 0.10));
+--nt-accent: var(--rk-graphite-accent, #ee6247);
+--nt-link: var(--rk-graphite-link, #f28a70);
+--nt-accent-rgb: var(--rk-graphite-accent-rgb, 238, 98, 71);
+--nt-text-4: #5e5e5e;
+--nt-line-strong: rgba(255, 255, 255, 0.22);
+--nt-hover: rgba(255, 255, 255, 0.06);
+--nt-accent-ink: #1a0603;
+--nt-spark: #ee6247;
+--nt-rose: #c8c8c8;
+--nt-violet: #a8a8b4;
+--nt-ice: #d4d4d4;
+--nt-node: #a0a0a0;
+--nt-haze-1: rgba(255, 255, 255, 0.03);
+--nt-haze-2: rgba(255, 255, 255, 0.02);
+--nt-scroll: rgba(255, 255, 255, 0.12);
+--nt-scroll-hover: rgba(255, 255, 255, 0.28);
+--nt-shadow: 0 24px 64px rgba(0, 0, 0, 0.75);
+--nt-paper: #ececec;
+--nt-paper-ink: #0f0f0f;
+--nt-sem-red: 238, 98, 71;
+--nt-sem-orange: 220, 150, 110;
+--nt-sem-yellow: 210, 190, 130;
+--nt-sem-green: 150, 190, 150;
+--nt-sem-cyan: 150, 190, 200;
+--nt-sem-blue: 150, 170, 200;
+--nt-sem-purple: 175, 165, 200;
+--nt-sem-pink: 210, 160, 170;
+--nt-seal-ring: rgba(238, 98, 71, 0.45);
+--nt-sec-0: var(--rk-sec-0, #d9a090);
+--nt-sec-1: var(--rk-sec-1, #c8b890);
+--nt-sec-2: var(--rk-sec-2, #90a8c0);
+--nt-sec-3: var(--rk-sec-3, #c0a070);
+--nt-sec-4: var(--rk-sec-4, #a0b890);
+--nt-sec-5: var(--rk-sec-5, #b8a0b8);
+--nt-sec-6: var(--rk-sec-6, #90b8b0);
+--nt-sec-7: var(--rk-sec-7, #c89090);
+--nt-sec-8: var(--rk-sec-8, #a8b0c8);
+--nt-sec-9: var(--rk-sec-9, #b0b0a0);
+}
+
+body.theme-dark.nb-os-kira:not(.css-settings-manager),
+body.theme-dark.nb-os-kira.rk-dark-auto,
+body.theme-dark.rk-dark-kira {
+--nt-deep: var(--rk-kira-deep, #07050a);
+--nt-side: var(--rk-kira-side, #0b0710);
+--nt-bg: var(--rk-kira-bg, #100a14);
+--nt-bg-alt: var(--rk-kira-bg-alt, #170e1d);
+--nt-raised: var(--rk-kira-raised, #1f1226);
+--nt-text: var(--rk-kira-text, #fdeef6);
+--nt-text-2: var(--rk-kira-text-2, #e0c4d6);
+--nt-text-3: var(--rk-kira-text-3, #b493aa);
+--nt-line: var(--rk-kira-line, rgba(255, 140, 200, 0.16));
+--nt-accent: var(--rk-kira-accent, #ff4fa3);
+--nt-link: var(--rk-kira-link, #ff7ab8);
+--nt-accent-rgb: var(--rk-kira-accent-rgb, 255, 79, 163);
+--nt-text-4: #7a5c70;
+--nt-line-strong: rgba(255, 140, 200, 0.32);
+--nt-hover: rgba(255, 180, 220, 0.07);
+--nt-accent-ink: #22000f;
+--nt-spark: #ffd1e8;
+--nt-rose: #ff9fcf;
+--nt-violet: #d9a0ff;
+--nt-ice: #ffe3f1;
+--nt-node: #ff8fc4;
+--nt-haze-1: rgba(255, 60, 160, 0.20);
+--nt-haze-2: rgba(140, 40, 180, 0.14);
+--nt-scroll: rgba(255, 140, 200, 0.18);
+--nt-scroll-hover: rgba(255, 140, 200, 0.40);
+--nt-shadow: 0 24px 64px rgba(10, 0, 8, 0.75);
+--nt-paper: #ffe3f1;
+--nt-paper-ink: #170e1d;
+--nt-sem-red: 255, 90, 120;
+--nt-sem-orange: 255, 150, 110;
+--nt-sem-yellow: 255, 210, 130;
+--nt-sem-green: 140, 230, 180;
+--nt-sem-cyan: 150, 225, 255;
+--nt-sem-blue: 170, 170, 255;
+--nt-sem-purple: 217, 160, 255;
+--nt-sem-pink: 255, 79, 163;
+--nt-seal-ring: rgba(255, 79, 163, 0.55);
+--nt-sec-0: var(--rk-sec-0, #ff4fa3);
+--nt-sec-1: var(--rk-sec-1, #d9a0ff);
+--nt-sec-2: var(--rk-sec-2, #ff9f6a);
+--nt-sec-3: var(--rk-sec-3, #ffd1e8);
+--nt-sec-4: var(--rk-sec-4, #ff7ab8);
+--nt-sec-5: var(--rk-sec-5, #b8f0d8);
+--nt-sec-6: var(--rk-sec-6, #ff8fc4);
+--nt-sec-7: var(--rk-sec-7, #a0c8ff);
+--nt-sec-8: var(--rk-sec-8, #ffb3d9);
+--nt-sec-9: var(--rk-sec-9, #e88aff);
+}
+
 body.theme-light,
-body.theme-dark.nb-os-washi {
+body.theme-dark.nb-os-washi:not(.css-settings-manager),
+body.theme-dark.nb-os-washi.rk-dark-auto,
+body.theme-dark.rk-dark-washi {
 color-scheme: light;
---nt-deep: #e4e2da;      --nt-side: #eeede8;      --nt-bg: #f7f6f1;        --nt-bg-alt: #efede6;    --nt-raised: #fbfaf6;    --nt-text: #1d1c1a;
---nt-text-2: #4a463f;
---nt-text-3: #6a655b;
+--nt-deep: var(--rk-washi-deep, #e4e2da);
+--nt-side: var(--rk-washi-side, #eeede8);
+--nt-bg: var(--rk-washi-bg, #f7f6f1);
+--nt-bg-alt: var(--rk-washi-bg-alt, #efede6);
+--nt-raised: var(--rk-washi-raised, #fbfaf6);
+--nt-text: var(--rk-washi-text, #1d1c1a);
+--nt-text-2: var(--rk-washi-text-2, #4a463f);
+--nt-text-3: var(--rk-washi-text-3, #6a655b);
+--nt-line: var(--rk-washi-line, #d4d0c5);
+--nt-accent: var(--rk-washi-accent, #b03a24);
+--nt-link: var(--rk-washi-link, #a8341f);
+--nt-accent-rgb: var(--rk-washi-accent-rgb, 176, 58, 36);
 --nt-text-4: #9a9486;
---nt-line: #d4d0c5;
 --nt-line-strong: #a39d90;
 --nt-hover: rgba(29, 28, 26, 0.06);
---nt-accent: #b03a24;    --nt-accent-hover: #92301d;
---nt-accent-rgb: 176, 58, 36;
 --nt-accent-ink: #fff8f4;
---nt-link: #a8341f;
+--nt-lift: #000 18%;
 --nt-spark: #c2412d;
 --nt-rose: #a8344f;
 --nt-violet: #5e4c8a;
@@ -114,7 +740,6 @@ color-scheme: light;
 --nt-shadow: 0 18px 48px rgba(60, 50, 30, 0.22);
 --nt-paper: #1d1c1a;
 --nt-paper-ink: #f7f6f1;
---nt-tile: linear-gradient(160deg, #2e0a11 0%, #150609 100%);
 --nt-sem-red: 139, 30, 63;
 --nt-sem-orange: 177, 90, 40;
 --nt-sem-yellow: 122, 88, 21;
@@ -123,8 +748,129 @@ color-scheme: light;
 --nt-sem-blue: 47, 74, 109;
 --nt-sem-purple: 94, 76, 138;
 --nt-sem-pink: 168, 52, 79;
---nt-sec-0: #b8402a; --nt-sec-1: #3d5f9e; --nt-sec-2: #a8782a; --nt-sec-3: #2f7a68; --nt-sec-4: #a33d62;
---nt-sec-5: #5e7f2e; --nt-sec-6: #6b5d4f; --nt-sec-7: #2f6f8e; --nt-sec-8: #6f55a0; --nt-sec-9: #a2562a;
+--nt-seal-ring: rgba(176, 58, 36, 0.45);
+--nt-seal-drop: 0 10px 22px rgba(60, 50, 30, 0.18);
+--nt-mk-tone: var(--nt-accent);
+--nt-sec-0: var(--rk-sec-0, #b8402a);
+--nt-sec-1: var(--rk-sec-1, #3d5f9e);
+--nt-sec-2: var(--rk-sec-2, #a8782a);
+--nt-sec-3: var(--rk-sec-3, #2f7a68);
+--nt-sec-4: var(--rk-sec-4, #a33d62);
+--nt-sec-5: var(--rk-sec-5, #5e7f2e);
+--nt-sec-6: var(--rk-sec-6, #6b5d4f);
+--nt-sec-7: var(--rk-sec-7, #2f6f8e);
+--nt-sec-8: var(--rk-sec-8, #6f55a0);
+--nt-sec-9: var(--rk-sec-9, #a2562a);
+}
+
+body.theme-light.nb-os-sakura-day:not(.css-settings-manager),
+body.theme-light.nb-os-sakura-day.rk-light-auto,
+body.theme-light.rk-light-sakura {
+--nt-deep: var(--rk-sakura-day-deep, #f1e2e6);
+--nt-side: var(--rk-sakura-day-side, #f7ecef);
+--nt-bg: var(--rk-sakura-day-bg, #fdf6f7);
+--nt-bg-alt: var(--rk-sakura-day-bg-alt, #f8eaee);
+--nt-raised: var(--rk-sakura-day-raised, #fffafb);
+--nt-text: var(--rk-sakura-day-text, #22161b);
+--nt-text-2: var(--rk-sakura-day-text-2, #4e3a43);
+--nt-text-3: var(--rk-sakura-day-text-3, #6e5862);
+--nt-line: var(--rk-sakura-day-line, #ecd3db);
+--nt-accent: var(--rk-sakura-day-accent, #b8336a);
+--nt-link: var(--rk-sakura-day-link, #a82f5f);
+--nt-accent-rgb: var(--rk-sakura-day-accent-rgb, 184, 51, 106);
+--nt-text-4: #a48f99;
+--nt-line-strong: #c9a4b2;
+--nt-hover: rgba(34, 22, 27, 0.06);
+--nt-accent-ink: #fff5f9;
+--nt-spark: #d04f86;
+--nt-violet: #7a4c9a;
+--nt-ice: #b0602f;
+--nt-node: #9a7a88;
+--nt-haze-1: rgba(255, 170, 200, 0.18);
+--nt-haze-2: rgba(255, 210, 225, 0.22);
+--nt-scroll: rgba(34, 22, 27, 0.18);
+--nt-scroll-hover: rgba(34, 22, 27, 0.38);
+--nt-shadow: 0 18px 48px rgba(90, 40, 60, 0.18);
+--nt-paper: #22161b;
+--nt-paper-ink: #fdf6f7;
+--nt-sem-red: 168, 40, 70;
+--nt-sem-orange: 176, 96, 47;
+--nt-sem-yellow: 140, 98, 20;
+--nt-sem-green: 61, 116, 86;
+--nt-sem-cyan: 47, 104, 125;
+--nt-sem-blue: 70, 80, 150;
+--nt-sem-purple: 122, 76, 154;
+--nt-sem-pink: 184, 51, 106;
+--nt-seal-ring: rgba(184, 51, 106, 0.45);
+--nt-seal-drop: 0 10px 22px rgba(90, 40, 60, 0.16);
+--nt-sec-0: var(--rk-sec-0, #b8336a);
+--nt-sec-1: var(--rk-sec-1, #3d5f9e);
+--nt-sec-2: var(--rk-sec-2, #a8782a);
+--nt-sec-3: var(--rk-sec-3, #2f7a68);
+--nt-sec-4: var(--rk-sec-4, #8a3fa0);
+--nt-sec-5: var(--rk-sec-5, #5e7f2e);
+--nt-sec-6: var(--rk-sec-6, #a2562a);
+--nt-sec-7: var(--rk-sec-7, #2f6f8e);
+--nt-sec-8: var(--rk-sec-8, #6f55a0);
+--nt-sec-9: var(--rk-sec-9, #9a4060);
+}
+
+body.theme-light.nb-os-yuki:not(.css-settings-manager),
+body.theme-light.nb-os-yuki.rk-light-auto,
+body.theme-light.rk-light-yuki {
+--nt-deep: var(--rk-yuki-deep, #e3e8ee);
+--nt-side: var(--rk-yuki-side, #eef2f6);
+--nt-bg: var(--rk-yuki-bg, #f8fafc);
+--nt-bg-alt: var(--rk-yuki-bg-alt, #eef2f6);
+--nt-raised: var(--rk-yuki-raised, #ffffff);
+--nt-text: var(--rk-yuki-text, #1b2330);
+--nt-text-2: var(--rk-yuki-text-2, #3e4a5c);
+--nt-text-3: var(--rk-yuki-text-3, #5f6b7d);
+--nt-line: var(--rk-yuki-line, #d5dce5);
+--nt-accent: var(--rk-yuki-accent, #3d5f8a);
+--nt-link: var(--rk-yuki-link, #34557e);
+--nt-accent-rgb: var(--rk-yuki-accent-rgb, 61, 95, 138);
+--nt-text-4: #98a2b0;
+--nt-line-strong: #a2adbb;
+--nt-hover: rgba(27, 35, 48, 0.06);
+--nt-accent-ink: #f8fafc;
+--nt-spark: #6a8cb8;
+--nt-rose: #8a4a6a;
+--nt-violet: #5a5a9a;
+--nt-ice: #2f7a80;
+--nt-node: #6a7a90;
+--nt-haze-1: rgba(150, 180, 220, 0.18);
+--nt-haze-2: rgba(200, 215, 235, 0.25);
+--nt-scroll: rgba(27, 35, 48, 0.18);
+--nt-scroll-hover: rgba(27, 35, 48, 0.38);
+--nt-shadow: 0 18px 48px rgba(30, 45, 70, 0.16);
+--nt-paper: #1b2330;
+--nt-paper-ink: #f8fafc;
+--nt-sem-red: 160, 50, 70;
+--nt-sem-orange: 170, 100, 50;
+--nt-sem-yellow: 125, 95, 30;
+--nt-sem-green: 50, 110, 85;
+--nt-sem-cyan: 40, 105, 125;
+--nt-sem-blue: 61, 95, 138;
+--nt-sem-purple: 90, 80, 150;
+--nt-sem-pink: 150, 60, 100;
+--nt-seal-ring: rgba(61, 95, 138, 0.40);
+--nt-seal-drop: 0 10px 22px rgba(30, 45, 70, 0.14);
+--nt-sec-0: var(--rk-sec-0, #9a4a5a);
+--nt-sec-1: var(--rk-sec-1, #3d5f8a);
+--nt-sec-2: var(--rk-sec-2, #8a6a2a);
+--nt-sec-3: var(--rk-sec-3, #2f7a6a);
+--nt-sec-4: var(--rk-sec-4, #6a4a8a);
+--nt-sec-5: var(--rk-sec-5, #4f7a3a);
+--nt-sec-6: var(--rk-sec-6, #6a5a4f);
+--nt-sec-7: var(--rk-sec-7, #2f6a8a);
+--nt-sec-8: var(--rk-sec-8, #5a5a9a);
+--nt-sec-9: var(--rk-sec-9, #8a5a3a);
+}
+
+body.theme-dark,
+body.theme-light {
+--nt-accent-hover: color-mix(in srgb, var(--nt-accent), var(--nt-lift));
 }
 
 body.theme-dark,
@@ -133,17 +879,18 @@ body.theme-light {
 --link-external-decoration-thickness: 1px;
 --font-interface-theme: 'Nebula Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 --font-text-theme: 'Nebula Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
---nt-font-display: 'Nebula Spectral', Spectral, Georgia, 'Times New Roman', serif;
+--nt-font-display: var(--rk-font-display, 'Nebula Spectral', Spectral, Georgia, 'Times New Roman', serif);
 --font-ui-smaller: 12px;
 --font-ui-small: 13px;
 --font-ui-medium: 14px;
 --font-ui-large: 18px;
 --line-height-normal: 1.7;
---file-line-width: 44rem;
---radius-s: 2px;
---radius-m: 3px;
---radius-l: 4px;
---radius-xl: 6px;
+--file-line-width: var(--rk-line-width, 44rem);
+--nt-radius: var(--rk-radius, 3px);
+--radius-s: max(0px, calc(var(--nt-radius) - 1px));
+--radius-m: var(--nt-radius);
+--radius-l: calc(var(--nt-radius) + 1px);
+--radius-xl: calc(var(--nt-radius) * 2);
 --color-base-00: var(--nt-bg);
 --color-base-05: var(--nt-bg);
 --color-base-10: var(--nt-bg-alt);
@@ -244,7 +991,7 @@ body.theme-light {
 --file-header-background-focused: transparent;
 --nav-item-size: 13px;
 --nav-item-padding: 3px 8px;
---nav-item-radius: 2px;
+--nav-item-radius: var(--radius-s);
 --nav-item-color: var(--nt-text-2);
 --nav-item-color-hover: var(--nt-text);
 --nav-item-color-active: var(--nt-accent);
@@ -312,7 +1059,7 @@ body.theme-light {
 --tag-border-color: var(--nt-line-strong);
 --tag-border-color-hover: var(--nt-accent);
 --tag-border-width: 1px;
---tag-radius: 2px;
+--tag-radius: var(--radius-s);
 --tag-size: 0.82em;
 --tag-weight: 500;
 --tag-padding-x: 0.55em;
@@ -332,7 +1079,7 @@ body.theme-light {
 --code-background: var(--nt-bg-alt);
 --code-border-color: var(--nt-line);
 --code-border-width: 1px;
---code-radius: 3px;
+--code-radius: var(--radius-m);
 --code-normal: var(--nt-text-2);
 --code-comment: var(--nt-text-3);
 --code-punctuation: var(--nt-text-3);
@@ -356,19 +1103,19 @@ body.theme-light {
 --table-row-alt-background: transparent;
 --table-row-background-hover: var(--nt-hover);
 --table-text-color: var(--nt-text);
---checkbox-radius: 2px;
+--checkbox-radius: var(--radius-s);
 --checkbox-size: 16px;
 --checkbox-color: var(--nt-accent);
 --checkbox-color-hover: var(--nt-accent-hover);
 --checkbox-border-color: var(--nt-line-strong);
 --checkbox-border-color-hover: var(--nt-text-2);
 --checkbox-marker-color: var(--nt-accent-ink);
---callout-radius: 3px;
+--callout-radius: var(--radius-m);
 --callout-border-width: 0;
 --callout-padding: 0.9em 1.1em;
 --callout-title-padding: 0 0 0.2em;
 --callout-title-weight: 600;
---input-radius: 3px;
+--input-radius: var(--radius-m);
 --input-border-width: 1px;
 --input-height: 32px;
 --input-focus-border-color: var(--nt-accent);
@@ -376,7 +1123,7 @@ body.theme-light {
 --input-placeholder-color: var(--nt-text-3);
 --input-shadow: none;
 --input-shadow-hover: none;
---button-radius: 3px;
+--button-radius: var(--radius-m);
 --button-secondary-bg-color: transparent;
 --button-secondary-border-color: var(--nt-line-strong);
 --button-secondary-fg-color: var(--nt-text);
@@ -391,13 +1138,13 @@ body.theme-light {
 --modal-background: var(--nt-raised);
 --modal-border-color: var(--nt-line-strong);
 --modal-border-width: 1px;
---modal-radius: 4px;
+--modal-radius: var(--radius-l);
 --modal-shadow: var(--nt-shadow);
 --modal-sidebar-background: var(--nt-bg-alt);
 --menu-background: var(--nt-raised);
 --menu-border-color: var(--nt-line-strong);
 --menu-border-width: 1px;
---menu-radius: 4px;
+--menu-radius: var(--radius-l);
 --menu-shadow: var(--nt-shadow);
 --menu-divider-color: var(--nt-line);
 --prompt-background: var(--nt-raised);
@@ -406,7 +1153,7 @@ body.theme-light {
 --settings-background: var(--nt-bg);
 --setting-items-background: transparent;
 --setting-items-border-color: var(--nt-line);
---setting-items-radius: 3px;
+--setting-items-radius: var(--radius-m);
 --setting-group-heading-color: var(--nt-text-3);
 --setting-group-heading-size: 11px;
 --setting-group-heading-weight: 600;
@@ -527,6 +1274,14 @@ transition: background-color 120ms ease;
 .workspace-split.mod-left-split > .workspace-leaf-resize-handle:hover,
 .workspace-split.mod-right-split > .workspace-leaf-resize-handle:hover {
 background-color: var(--nt-accent);
+}
+body.rk-no-haze .workspace-leaf-content[data-type='markdown'] .view-content,
+body.rk-no-haze .workspace-leaf-content[data-type='empty'] .view-content,
+body.rk-no-haze .workspace-leaf-content[data-type='empty'] {
+background: var(--nt-bg);
+}
+body.rk-no-tab-line .workspace-tab-header.is-active .workspace-tab-header-inner {
+box-shadow: none;
 }
 
 .markdown-rendered h1,
@@ -738,6 +1493,14 @@ background:
 linear-gradient(180deg, rgba(var(--nt-accent-rgb), 0.9), rgba(var(--nt-accent-rgb), 0.15) 70%, rgba(var(--nt-accent-rgb), 0.6)) left / 2px 100% no-repeat,
 rgba(var(--nt-accent-rgb), 0.05);
 }
+body.rk-no-rise .inline-title {
+animation: none;
+}
+body.rk-plain-markers .markdown-rendered :is(ul, ol),
+body.rk-plain-markers :is(.HyperMD-list-line-1, .HyperMD-list-line-2, .HyperMD-list-line-3, .HyperMD-list-line-4, .HyperMD-list-line-5) {
+--list-marker-color: var(--nt-text-3);
+--list-marker-color-hover: var(--nt-accent);
+}
 
 .modal {
 border: 1px solid var(--nt-line-strong);
@@ -903,61 +1666,6 @@ margin: 0 auto 44px;
 border-radius: 3px;
 background-repeat: no-repeat;
 }
-body.theme-dark .empty-state-container::before {
-background: var(--nt-mark-star) center / auto 74% no-repeat;
-filter: drop-shadow(0 0 4px color-mix(in srgb, var(--nt-violet) 65%, transparent)) drop-shadow(0 0 26px color-mix(in srgb, var(--nt-spark) 35%, transparent));
-}
-body.theme-dark.nb-os-mk-nebula .empty-state-container::before {
-background: linear-gradient(135deg, var(--nt-violet), var(--nt-spark) 55%, var(--nt-accent));
-filter: none;
-mask: var(--nt-mark) center / auto 74% no-repeat;
-}
-body.theme-dark.nb-os-mk-orbit .empty-state-container::before {
-border-radius: 0;
-background:
-var(--nt-mark-paper) center / auto 56% no-repeat,
-radial-gradient(circle 4.5px at 85.4% 14.6%, var(--nt-accent) 0 85%, transparent 100%),
-radial-gradient(closest-side circle, transparent calc(100% - 1.6px), color-mix(in srgb, var(--nt-accent) 75%, transparent) calc(100% - 1.1px), color-mix(in srgb, var(--nt-accent) 75%, transparent) calc(100% - 0.2px), transparent 100%);
-filter: drop-shadow(0 0 12px color-mix(in srgb, var(--nt-accent) 28%, transparent));
-}
-body.theme-dark.nb-os-mk-hanko .empty-state-container::before,
-body.theme-light .empty-state-container::before {
-background: var(--nt-mark-paper) center 54% / auto 66% no-repeat, linear-gradient(160deg, #c9303d 0%, #a51e2b 100%);
-box-shadow: 0 0 0 10px var(--nt-bg), 0 0 0 11px rgba(233, 196, 106, 0.6), 0 12px 28px rgba(0, 0, 0, 0.35);
-filter: none;
-mask: none;
-transform: rotate(-3deg);
-}
-body.theme-light .empty-state-container::before {
-box-shadow: 0 0 0 10px var(--nt-bg), 0 0 0 11px rgba(176, 58, 36, 0.45), 0 10px 22px rgba(60, 50, 30, 0.18);
-}
-body.nb-os-washi .empty-state-container::before {
-background: var(--nt-mark-paper) center 54% / auto 66% no-repeat, linear-gradient(160deg, #c2452c 0%, #a2301d 100%);
-box-shadow: 0 0 0 10px var(--nt-bg), 0 0 0 11px rgba(176, 58, 36, 0.45), 0 10px 22px rgba(60, 50, 30, 0.18);
-filter: none;
-mask: none;
-transform: rotate(-3deg);
-}
-body.nb-os-washi.nb-os-mk-sumi .empty-state-container::before,
-body.nb-os-washi.nb-os-mk-shu .empty-state-container::before {
-border-radius: 0;
-background: #1d1c1a;
-box-shadow: none;
-transform: none;
-mask: var(--nt-mark) center / auto 74% no-repeat;
-}
-body.nb-os-washi.nb-os-mk-shu .empty-state-container::before {
-background: #b03a24;
-}
-body.theme-dark.nb-os-mk-leaf .empty-state-container::before {
-background: var(--nt-mark-leaf) center / auto 74% no-repeat;
-filter: drop-shadow(0 0 14px rgba(233, 196, 106, 0.32));
-}
-body.theme-dark.nb-os-mk-inlay .empty-state-container::before {
-background: var(--nt-mark-leaf) center 54% / auto 64% no-repeat, radial-gradient(circle at 50% 30%, #2c1e13 0%, #140d08 70%);
-box-shadow: inset 0 0 0 1px rgba(233, 196, 106, 0.45), 0 0 0 10px var(--nt-bg), 0 0 0 11px rgba(233, 196, 106, 0.5), 0 12px 28px rgba(0, 0, 0, 0.45);
-filter: none;
-}
 .empty-state-title {
 font-family: var(--nt-font-display);
 font-size: 1.6em;
@@ -997,6 +1705,154 @@ letter-spacing: 0.003em;
 background: rgba(var(--nt-accent-rgb), 0.28);
 color: var(--nt-text);
 box-shadow: inset 0 -1px 0 rgba(var(--nt-accent-rgb), 0.7);
+}
+
+body.theme-dark .empty-state-container::before,
+body.nb-os-mk-star:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-star .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-star .empty-state-container::before,
+body.theme-dark.rk-dark-ink .empty-state-container::before,
+html body.css-settings-manager.rk-mk-star .empty-state-container::before {
+background: var(--nt-mark-star) center / auto 74% no-repeat;
+filter: drop-shadow(0 0 4px color-mix(in srgb, var(--nt-violet) 65%, transparent)) drop-shadow(0 0 26px color-mix(in srgb, var(--nt-spark) 35%, transparent));
+mask: none;
+box-shadow: none;
+transform: none;
+border-radius: 3px;
+}
+
+body.nb-os-mk-nebula:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-nebula .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-nebula .empty-state-container::before,
+html body.css-settings-manager.rk-mk-nebula .empty-state-container::before {
+background: linear-gradient(135deg, var(--nt-violet), var(--nt-spark) 55%, var(--nt-accent));
+filter: none;
+mask: var(--nt-mark) center / auto 74% no-repeat;
+box-shadow: none;
+transform: none;
+border-radius: 3px;
+}
+
+body.nb-os-mk-orbit:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-orbit .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-orbit .empty-state-container::before,
+body.theme-dark.rk-dark-indigo .empty-state-container::before,
+html body.css-settings-manager.rk-mk-orbit .empty-state-container::before {
+background: var(--nt-mark-paper) center / auto 56% no-repeat, radial-gradient(circle 4.5px at 85.4% 14.6%, var(--nt-mk-tone) 0 85%, transparent 100%), radial-gradient(closest-side circle, transparent calc(100% - 1.6px), color-mix(in srgb, var(--nt-mk-tone) 75%, transparent) calc(100% - 1.1px), color-mix(in srgb, var(--nt-mk-tone) 75%, transparent) calc(100% - 0.2px), transparent 100%);
+filter: drop-shadow(0 0 12px color-mix(in srgb, var(--nt-mk-tone) 28%, transparent));
+mask: none;
+box-shadow: none;
+transform: none;
+border-radius: 0;
+}
+
+body.nb-os-mk-hanko:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-hanko .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-hanko .empty-state-container::before,
+html body.css-settings-manager.rk-mk-hanko .empty-state-container::before {
+background: var(--nt-mark-paper) center 54% / auto 66% no-repeat, linear-gradient(160deg, #c9303d 0%, #a51e2b 100%);
+filter: none;
+mask: none;
+box-shadow: 0 0 0 10px var(--nt-bg), 0 0 0 11px var(--nt-seal-ring), var(--nt-seal-drop);
+transform: rotate(-3deg);
+border-radius: 3px;
+}
+
+body.nb-os-mk-leaf:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-leaf .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-leaf .empty-state-container::before,
+body.theme-dark.rk-dark-kintsugi .empty-state-container::before,
+body.theme-dark.rk-dark-moss .empty-state-container::before,
+html body.css-settings-manager.rk-mk-leaf .empty-state-container::before {
+background: var(--nt-mark-leaf) center / auto 74% no-repeat;
+filter: drop-shadow(0 0 14px rgba(233, 196, 106, 0.32));
+mask: none;
+box-shadow: none;
+transform: none;
+border-radius: 3px;
+}
+
+body.nb-os-mk-inlay:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-inlay .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-inlay .empty-state-container::before,
+html body.css-settings-manager.rk-mk-inlay .empty-state-container::before {
+background: var(--nt-mark-leaf) center 54% / auto 64% no-repeat, radial-gradient(circle at 50% 30%, #2c1e13 0%, #140d08 70%);
+filter: none;
+mask: none;
+box-shadow: inset 0 0 0 1px rgba(233, 196, 106, 0.45), 0 0 0 10px var(--nt-bg), 0 0 0 11px rgba(233, 196, 106, 0.5), 0 12px 28px rgba(0, 0, 0, 0.45);
+transform: none;
+border-radius: 3px;
+}
+
+body.theme-light .empty-state-container::before,
+body.nb-os-mk-inkan:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-inkan .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-inkan .empty-state-container::before,
+body.theme-dark.rk-dark-washi .empty-state-container::before,
+html body.css-settings-manager.rk-mk-inkan .empty-state-container::before {
+background: var(--nt-mark-paper) center 54% / auto 66% no-repeat, linear-gradient(160deg, #c2452c 0%, #a2301d 100%);
+filter: none;
+mask: none;
+box-shadow: 0 0 0 10px var(--nt-bg), 0 0 0 11px var(--nt-seal-ring), var(--nt-seal-drop);
+transform: rotate(-3deg);
+border-radius: 3px;
+}
+
+body.nb-os-mk-sumi:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-sumi .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-sumi .empty-state-container::before,
+body.theme-dark.rk-dark-graphite .empty-state-container::before,
+body.theme-light.rk-light-yuki .empty-state-container::before,
+html body.css-settings-manager.rk-mk-sumi .empty-state-container::before {
+background: var(--nt-text);
+filter: none;
+mask: var(--nt-mark) center / auto 74% no-repeat;
+box-shadow: none;
+transform: none;
+border-radius: 0;
+}
+
+body.nb-os-mk-shu:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-shu .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-shu .empty-state-container::before,
+html body.css-settings-manager.rk-mk-shu .empty-state-container::before {
+background: #b03a24;
+filter: none;
+mask: var(--nt-mark) center / auto 74% no-repeat;
+box-shadow: none;
+transform: none;
+border-radius: 0;
+}
+
+body.nb-os-mk-blossom:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-blossom .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-blossom .empty-state-container::before,
+body.theme-dark.rk-dark-sakura .empty-state-container::before,
+body.theme-light.rk-light-sakura .empty-state-container::before,
+html body.css-settings-manager.rk-mk-blossom .empty-state-container::before {
+background: var(--nt-mark-paper) center 54% / auto 66% no-repeat, linear-gradient(160deg, #e2508a 0%, #b42a5f 100%);
+filter: none;
+mask: none;
+box-shadow: 0 0 0 10px var(--nt-bg), 0 0 0 11px var(--nt-seal-ring), var(--nt-seal-drop);
+transform: rotate(-3deg);
+border-radius: 3px;
+}
+
+body.nb-os-mk-bow:not(.css-settings-manager) .empty-state-container::before,
+body.theme-dark.rk-dark-auto.rk-mk-auto.nb-os-mk-bow .empty-state-container::before,
+body.theme-light.rk-light-auto.rk-mk-auto.nb-os-mk-bow .empty-state-container::before,
+body.theme-dark.rk-dark-kira .empty-state-container::before,
+html body.css-settings-manager.rk-mk-bow .empty-state-container::before {
+background: var(--nt-bow) center / auto 72% no-repeat;
+filter: drop-shadow(0 0 6px color-mix(in srgb, var(--nt-accent) 55%, transparent)) drop-shadow(0 0 26px color-mix(in srgb, var(--nt-accent) 30%, transparent));
+mask: none;
+box-shadow: none;
+transform: none;
+border-radius: 3px;
+}
+
+html body.css-settings-manager.rk-mk-none .empty-state-container::before {
+display: none;
 }
 
 .nav-files-container > div > .nav-folder > .nav-folder-title[data-path^='0. '],
@@ -1040,6 +1896,15 @@ color: color-mix(in oklab, var(--nt-sec, var(--nt-text-2)) 22%, var(--nt-text-2)
 }
 .nav-files-container > div > .nav-folder > .nav-folder-title:hover {
 background: color-mix(in srgb, var(--nt-sec, var(--nt-text)) 9%, transparent);
+}
+body.rk-plain-sections .nav-files-container > div > .nav-folder > .nav-folder-title[data-path],
+body.rk-plain-sections .nav-files-container > div > .nav-folder > .nav-folder-title[data-path] ~ .nav-folder-children {
+--nt-sec: initial;
+}
+body.rk-no-veins .nav-files-container > div > .nav-folder > .nav-folder-children,
+body.rk-no-veins .nav-files-container > div > .nav-folder .nav-folder > .nav-folder-children {
+--nav-indentation-guide-width: 1px;
+--nav-indentation-guide-color: var(--nt-line);
 }
 
 .kanban-plugin__lane {
@@ -1235,6 +2100,45 @@ background: var(--nt-line);
 .nb-daily-note .metadata-property[data-nb-scale] .metadata-property-value::after {
 width: calc((100% - 12px) * var(--nb-val, 0));
 background: linear-gradient(90deg, rgba(var(--nt-accent-rgb), 0.35), var(--nt-accent));
+}
+
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto):not(.rk-kira-no-glitter) :is(.titlebar, .workspace-tab-header-container, .workspace-ribbon, .status-bar, .mobile-navbar) {
+background-image: var(--nt-glitter);
+background-size: 48px 48px;
+}
+@media (prefers-reduced-motion: no-preference) {
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto):not(.rk-kira-no-glitter) .empty-state-container::before {
+animation: rk-twinkle 2.8s ease-in-out infinite;
+}
+}
+@keyframes rk-twinkle {
+50% { opacity: 0.78; }
+}
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto) .inline-title,
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto) .markdown-rendered h1 {
+text-shadow: 0 0 22px rgba(var(--nt-accent-rgb), 0.35);
+}
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto):not(.rk-kira-no-dots) .list-bullet::after {
+background: radial-gradient(circle at 35% 30%, #fff 0 18%, var(--list-marker-color) 46%, color-mix(in srgb, var(--list-marker-color) 55%, #000) 100%);
+}
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto):not(.rk-kira-no-dots) :is(.markdown-rendered hr, .cm-s-obsidian .cm-hr, .markdown-source-view.mod-cm6 hr) {
+height: 6px;
+background: radial-gradient(circle at 50% 45%, #fff 0 0.7px, var(--nt-accent) 1.3px 2px, transparent 2.5px) center / 12px 6px repeat-x;
+mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+body.theme-dark:is(.rk-dark-kira, .nb-os-kira:not(.css-settings-manager), .nb-os-kira.rk-dark-auto):not(.rk-kira-no-dots) input[type='checkbox']:checked::after {
+mask-image: var(--nt-heart);
+mask-size: 72%;
+}
+.callout[data-callout='kira'] {
+--nt-callout: var(--nt-accent-rgb);
+--callout-icon: lucide-heart;
+background:
+radial-gradient(circle, rgba(var(--nt-accent-rgb), 0.16) 1.4px, transparent 2px) 0 0 / 13px 13px,
+rgba(var(--nt-accent-rgb), 0.06);
+}
+body.rk-kira-no-dots .callout[data-callout='kira'] {
+background: rgba(var(--nt-accent-rgb), 0.07);
 }
 
 .is-mobile .mobile-navbar {
