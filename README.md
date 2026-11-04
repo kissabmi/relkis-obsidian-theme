@@ -33,8 +33,26 @@ New versions are published as GitHub releases, and Obsidian offers them as theme
 
 ## Looks
 
-Dark mode is Cosmos and light mode is Washi. A companion plugin (not public yet) can switch between
-more looks: Ink Cosmos, Kintsugi, and Washi in dark mode. The theme is complete without it.
+RelKis has eleven looks: eight dark and three light. To change them, install the
+[Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin and open its RelKis section: pick one look
+for dark mode and one for light mode. Without it, dark mode is Cosmos and light mode is Washi.
+
+| Look | Mode | What it is |
+| --- | --- | --- |
+| Cosmos | dark | deep violet and gold, with a quiet haze over the note (default) |
+| Ink Cosmos | dark | a colder night, blue ink and pale gold |
+| Kintsugi | dark | black lacquer with gold seams and a drop of cinnabar |
+| Sakura · night | dark | plum night, pink sakura and lantern gold |
+| Indigo | dark | indigo-dyed cloth and silver |
+| Moss | dark | a moss garden at dusk and old bronze |
+| Graphite | dark | pure sumi ink and one cinnabar accent |
+| Kira-kira | dark | black gloss, bright pink, glitter on the frame and a rhinestone bow |
+| Washi | light | rice paper, ink and a cinnabar seal (default) |
+| Sakura · day | light | pale pink paper, ink and a sakura seal |
+| Yuki | light | fresh snow and grey-blue ink |
+
+Each look has its own colours, and you can adjust them in Style Settings too. A companion plugin (not public yet) keeps
+its look and the theme's in sync. The theme is complete without it.
 
 ## Fonts
 
@@ -57,6 +75,10 @@ Washi — рисовая бумага, тушь и киноварь.
 темы нет в каталоге, скачайте `manifest.json` и `theme.css` из
 [последнего релиза](https://github.com/kissabmi/relkis-obsidian-theme/releases/latest) в папку
 `.obsidian/themes/RelKis/` своего хранилища и выберите RelKis в Настройки → Внешний вид → Темы.
+
+**Облики.** В теме одиннадцать обликов: восемь тёмных и три светлых. Чтобы их менять, поставьте плагин
+[Style Settings](https://github.com/mgmeyers/obsidian-style-settings) и в разделе RelKis выберите облик для тёмной и для
+светлой схемы. Там же настраиваются цвета каждого облика. Без плагина в тёмной схеме будет Космос, в светлой — Washi.
 
 **Обновления.** Каждая новая версия выходит релизом на GitHub, и Obsidian предлагает её как обновление темы.
 
