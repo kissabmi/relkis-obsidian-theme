@@ -1,7 +1,7 @@
 # RelKis
 
-A dark, quiet theme for Obsidian: deep violet, gold accents and Spectral headings. In light mode it turns into
-Washi: rice paper, ink and cinnabar.
+A calm Obsidian theme built from Japanese materials: eleven looks, from violet and gold at night to rice paper and
+ink by day.
 
 ![RelKis in dark mode](images/preview.png)
 
@@ -68,8 +68,8 @@ The theme is MIT licensed (see [LICENSE](LICENSE)). The embedded fonts are under
 
 ## По-русски
 
-Тёмная спокойная тема для Obsidian: глубокий фиолетовый, золото и заголовки Spectral. В светлой схеме она становится
-Washi — рисовая бумага, тушь и киноварь.
+Спокойная тема для Obsidian из японских материалов: одиннадцать обликов, от фиолетового с золотом ночью до рисовой
+бумаги и туши днём.
 
 **Установка.** Настройки → Внешний вид → Темы → открыть каталог тем → найти «RelKis» → установить и включить. Пока
 темы нет в каталоге, скачайте `manifest.json` и `theme.css` из
