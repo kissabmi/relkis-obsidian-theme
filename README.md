@@ -5,7 +5,7 @@
 A calm Obsidian theme built from Japanese materials: eleven looks, from violet and gold at night to rice paper and
 ink by day.
 
-![RelKis in dark mode](images/preview.png)
+![All eleven looks of RelKis](images/preview.png)
 
 ## What it covers
 
@@ -21,7 +21,7 @@ ink by day.
   in the system, nothing animates.
 - **Offline.** The fonts are embedded, so the theme loads nothing from the network.
 
-![Properties and headings](images/properties.png)
+![The Kintsugi look](images/properties.png)
 
 ## Install
 
