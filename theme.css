@@ -1,6 +1,6 @@
 /* RelKis for Obsidian · https://github.com/kissabmi/relkis-obsidian-theme · MIT
-   Eleven looks. Pick one in Style Settings, or let the RELISA Nebula plugin choose; without either, dark mode is Cosmos
-   and light mode is Washi. Built by build.py from src/. Fonts: Spectral and IBM Plex Sans (renamed Nebula Sans),
+   Eleven looks, chosen in Style Settings or the RELISA Nebula plugin. Built by build.py from src/.
+   Fonts: Spectral and IBM Plex Sans (renamed Nebula Sans),
    subset to Latin and Cyrillic, SIL Open Font License 1.1, see fonts/OFL-*.txt. */
 
 /* @settings
@@ -9,7 +9,7 @@ name: RelKis
 id: relkis
 settings:
 - {id: rk-h-look, type: heading, level: 1, title: Look, title.ru: Облик, collapsed: false}
-- {id: rk-look-info, type: info-text, description: 'A look chosen here and one chosen in the Look window of the RELISA Nebula plugin stay in step, change either and the other follows. “As in RELISA Nebula” leaves the choice to the plugin. Without the plugin, dark mode shows Cosmos and light mode shows Washi.', description.ru: 'Облик здесь и в окне «Облик» плагина RELISA Nebula связан, поменяешь в одном месте, и второе подтянется. «As in RELISA Nebula» оставляет выбор плагину. Без плагина в тёмной схеме будет Космос, в светлой — Washi.'}
+- {id: rk-look-info, type: info-text, description: This choice and the Look window of the RELISA Nebula plugin stay in step. “As in RELISA Nebula” leaves it to the plugin., description.ru: Этот выбор и окно «Облик» плагина RELISA Nebula связаны. «As in RELISA Nebula» оставляет выбор плагину.}
 - id: rk-dark
   type: class-select
   title: Look in dark mode
@@ -59,7 +59,7 @@ settings:
   - {label: Bow, value: rk-mk-bow}
   - {label: No mark, value: rk-mk-none}
 - {id: rk-h-ui, type: heading, level: 1, title: Interface, title.ru: Интерфейс, collapsed: true}
-- {id: rk-font-display, type: variable-text, title: Heading font, title.ru: Шрифт заголовков, description: Any font installed on the device. The reset button brings Spectral back., description.ru: 'Любой шрифт, установленный на устройстве. Кнопка сброса вернёт Spectral.', default: '''Nebula Spectral'', Spectral, Georgia, serif'}
+- {id: rk-font-display, type: variable-text, title: Heading font, title.ru: Шрифт заголовков, description: Any font installed on the device. The reset button brings Spectral back., description.ru: Любой шрифт с устройства. Кнопка сброса вернёт Spectral., default: '''Nebula Spectral'', Spectral, Georgia, serif'}
 - {id: rk-line-width, type: variable-number-slider, title: Line width, title.ru: Ширина строки, description: 'In rem, when “Readable line length” is on.', description.ru: 'В rem, когда включена «Читаемая длина строки».', default: 44, min: 32, max: 72, step: 1, format: rem}
 - {id: rk-radius, type: variable-number-slider, title: Corner radius, title.ru: Скругление углов, description: 'Buttons, fields, menus and windows, in px.', description.ru: 'Кнопки, поля, меню и окна, в px.', default: 3, min: 0, max: 12, step: 1, format: px}
 - {id: rk-no-haze, type: class-toggle, title: No haze above the note, title.ru: Без дымки над заметкой, default: false}
@@ -71,7 +71,7 @@ settings:
 - {id: rk-kira-no-glitter, type: class-toggle, title: No glitter on the window frame, title.ru: Без блёсток на рамке окна, description: 'Kira-kira, Cosmos, Sakura · night, Kintsugi.', description.ru: 'Кира-кира, Космос, Сакура · ночь, Кинцуги.', default: false}
 - {id: rk-kira-no-dots, type: class-toggle, title: 'Kira-kira: no polka dots, hearts and rhinestones', title.ru: 'Кира-кира: без горошка, сердечек и страз', default: false}
 - {id: rk-h-colours, type: heading, level: 1, title: Colours, title.ru: Цвета, collapsed: true, description: Each look keeps colours of its own. The reset button next to a colour brings the look’s colour back., description.ru: У каждого облика свои цвета. Кнопка сброса рядом с цветом возвращает цвет облика.}
-- {id: rk-h-cosmos, type: heading, level: 2, title: Cosmos, title.ru: Космос, description: 'Deep violet and gold, a quiet haze above the note.', description.ru: 'Глубокий фиолет и золото, тихая дымка над заметкой.', collapsed: true}
+- {id: rk-h-cosmos, type: heading, level: 2, title: Cosmos, title.ru: Космос, description: '宇宙, the universe. Deep violet and gold, a quiet haze above the note.', description.ru: '宇宙, вселенная. Глубокий фиолет и золото, тихая дымка над заметкой.', collapsed: true}
 - {id: rk-cosmos-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#04020a'}
 - {id: rk-cosmos-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#070312'}
 - {id: rk-cosmos-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0a0518'}
@@ -90,7 +90,7 @@ settings:
   alt-format:
   - {id: rk-cosmos-accent-rgb, format: rgb-values}
 - {id: rk-cosmos-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ffc95c'}
-- {id: rk-h-ink, type: heading, level: 2, title: Ink Cosmos, title.ru: Космос · Чернильный, description: 'A colder night, ink blue and pale gold.', description.ru: 'Ночь холоднее, синие чернила и бледное золото.', collapsed: true}
+- {id: rk-h-ink, type: heading, level: 2, title: Ink Cosmos, title.ru: Космос · Чернильный, description: '墨の宇宙, a cosmos in ink. A colder night, ink blue and pale gold.', description.ru: '墨の宇宙, космос тушью. Ночь холоднее, синие чернила и бледное золото.', collapsed: true}
 - {id: rk-ink-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#03040c'}
 - {id: rk-ink-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#060818'}
 - {id: rk-ink-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#080a1c'}
@@ -109,7 +109,7 @@ settings:
   alt-format:
   - {id: rk-ink-accent-rgb, format: rgb-values}
 - {id: rk-ink-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#e8c98a'}
-- {id: rk-h-kintsugi, type: heading, level: 2, title: Kintsugi, title.ru: Кинцуги, description: 'Black lacquer mended with gold, a touch of cinnabar.', description.ru: Чёрный лак с золотыми швами и каплей киновари., collapsed: true}
+- {id: rk-h-kintsugi, type: heading, level: 2, title: Kintsugi, title.ru: Кинцуги, description: '金継ぎ, golden repair. Black lacquer mended with gold, a touch of cinnabar.', description.ru: '金継ぎ, починка золотом. Чёрный лак с золотыми швами и каплей киновари.', collapsed: true}
 - {id: rk-kintsugi-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#070504'}
 - {id: rk-kintsugi-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#0a0705'}
 - {id: rk-kintsugi-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0e0a07'}
@@ -128,7 +128,7 @@ settings:
   alt-format:
   - {id: rk-kintsugi-accent-rgb, format: rgb-values}
 - {id: rk-kintsugi-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#e6b75c'}
-- {id: rk-h-sakura, type: heading, level: 2, title: Sakura · night, title.ru: Сакура · ночь, description: 'Plum-black night, cherry pink and lantern gold.', description.ru: 'Сливовая ночь, розовая сакура и золото фонарей.', collapsed: true}
+- {id: rk-h-sakura, type: heading, level: 2, title: Sakura · night, title.ru: Сакура · ночь, description: '夜桜, blossoms at night. Plum-black night, cherry pink and lantern gold.', description.ru: '夜桜, сакура ночью. Сливовая ночь, розовая сакура и золото фонарей.', collapsed: true}
 - {id: rk-sakura-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#0b0509'}
 - {id: rk-sakura-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#10070d'}
 - {id: rk-sakura-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#150a12'}
@@ -147,7 +147,7 @@ settings:
   alt-format:
   - {id: rk-sakura-accent-rgb, format: rgb-values}
 - {id: rk-sakura-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ffa5c9'}
-- {id: rk-h-indigo, type: heading, level: 2, title: Indigo, title.ru: Индиго, description: Indigo-dyed cloth and silver., description.ru: 'Ткань, окрашенная индиго, и серебро.', collapsed: true}
+- {id: rk-h-indigo, type: heading, level: 2, title: Indigo, title.ru: Индиго, description: 藍. Indigo-dyed cloth and silver., description.ru: '藍. Ткань, окрашенная индиго, и серебро.', collapsed: true}
 - {id: rk-indigo-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#03060e'}
 - {id: rk-indigo-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#050a16'}
 - {id: rk-indigo-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#08101f'}
@@ -166,7 +166,7 @@ settings:
   alt-format:
   - {id: rk-indigo-accent-rgb, format: rgb-values}
 - {id: rk-indigo-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#9db8ff'}
-- {id: rk-h-moss, type: heading, level: 2, title: Moss, title.ru: Мох, description: A moss garden at dusk and old bronze., description.ru: Сад мха в сумерках и старая бронза., collapsed: true}
+- {id: rk-h-moss, type: heading, level: 2, title: Moss, title.ru: Мох, description: 苔. A moss garden at dusk and old bronze., description.ru: 苔. Сад мха в сумерках и старая бронза., collapsed: true}
 - {id: rk-moss-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#040703'}
 - {id: rk-moss-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#070b06'}
 - {id: rk-moss-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0a0f09'}
@@ -185,7 +185,7 @@ settings:
   alt-format:
   - {id: rk-moss-accent-rgb, format: rgb-values}
 - {id: rk-moss-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#d6a76a'}
-- {id: rk-h-graphite, type: heading, level: 2, title: Graphite, title.ru: Графит, description: Pure sumi ink with one cinnabar accent., description.ru: Чистая тушь сумі и один киноварный акцент., collapsed: true}
+- {id: rk-h-graphite, type: heading, level: 2, title: Graphite, title.ru: Графит, description: 黒鉛. Pure sumi ink with one cinnabar accent., description.ru: 黒鉛. Чистая тушь суми и один киноварный акцент., collapsed: true}
 - {id: rk-graphite-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#050505'}
 - {id: rk-graphite-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#0a0a0a'}
 - {id: rk-graphite-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#0f0f0f'}
@@ -204,7 +204,7 @@ settings:
   alt-format:
   - {id: rk-graphite-accent-rgb, format: rgb-values}
 - {id: rk-graphite-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#f28a70'}
-- {id: rk-h-kira, type: heading, level: 2, title: Kira-kira, title.ru: Кира-кира, description: 'Glossy black, hot pink, glitter on the frame and a rhinestone bow.', description.ru: 'Чёрный глянец, ярко-розовый, блёстки по рамке и бантик в стразах.', collapsed: true}
+- {id: rk-h-kira, type: heading, level: 2, title: Kira-kira, title.ru: Кира-кира, description: 'きらきら, sparkling. Glossy black, hot pink, glitter on the frame and a rhinestone bow.', description.ru: 'きらきら, сверкает. Чёрный глянец, ярко-розовый, блёстки по рамке и бантик в стразах.', collapsed: true}
 - {id: rk-kira-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#07050a'}
 - {id: rk-kira-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#0b0710'}
 - {id: rk-kira-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#100a14'}
@@ -223,7 +223,7 @@ settings:
   alt-format:
   - {id: rk-kira-accent-rgb, format: rgb-values}
 - {id: rk-kira-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ff7ab8'}
-- {id: rk-h-washi, type: heading, level: 2, title: Washi, title.ru: Washi, description: 'Rice paper, sumi ink and a cinnabar seal.', description.ru: 'Рисовая бумага, тушь и киноварная печать.', collapsed: true}
+- {id: rk-h-washi, type: heading, level: 2, title: Washi, title.ru: Washi, description: '和紙, Japanese paper. Rice paper, sumi ink and a cinnabar seal.', description.ru: '和紙, японская бумага. Рисовая бумага, тушь и киноварная печать.', collapsed: true}
 - {id: rk-washi-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#ece7da'}
 - {id: rk-washi-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#f3efe4'}
 - {id: rk-washi-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#faf7ef'}
@@ -242,7 +242,7 @@ settings:
   alt-format:
   - {id: rk-washi-accent-rgb, format: rgb-values}
 - {id: rk-washi-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#a52e19'}
-- {id: rk-h-sakura-day, type: heading, level: 2, title: Sakura · day, title.ru: Сакура · день, description: 'A pink frame, a white sheet, ink and a blossom seal.', description.ru: 'Розовая рамка, белый лист, тушь и печать-сакура.', collapsed: true}
+- {id: rk-h-sakura-day, type: heading, level: 2, title: Sakura · day, title.ru: Сакура · день, description: '昼の桜, blossoms by day. A pink frame, a white sheet, ink and a blossom seal.', description.ru: '昼の桜, дневная сакура. Розовая рамка, белый лист, тушь и печать-сакура.', collapsed: true}
 - {id: rk-sakura-day-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#fbdfe8'}
 - {id: rk-sakura-day-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#feeef3'}
 - {id: rk-sakura-day-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#fffbfc'}
@@ -261,7 +261,7 @@ settings:
   alt-format:
   - {id: rk-sakura-day-accent-rgb, format: rgb-values}
 - {id: rk-sakura-day-link, type: variable-color, title: Links, title.ru: Ссылки, format: hex, default: '#ad1457'}
-- {id: rk-h-yuki, type: heading, level: 2, title: Yuki, title.ru: Юки, description: 'Fresh snow, a cold blue frame and a clean blue accent.', description.ru: 'Свежий снег, холодная синяя рамка и чистый синий акцент.', collapsed: true}
+- {id: rk-h-yuki, type: heading, level: 2, title: Yuki, title.ru: Юки, description: '雪, snow. Fresh snow, a cold blue frame and a clean blue accent.', description.ru: '雪, снег. Свежий снег, холодная синяя рамка и чистый синий акцент.', collapsed: true}
 - {id: rk-yuki-deep, type: variable-color, title: Window frame, title.ru: Рамка окна, format: hex, default: '#dfe8f2'}
 - {id: rk-yuki-side, type: variable-color, title: Side panels, title.ru: Боковые панели, format: hex, default: '#edf3f9'}
 - {id: rk-yuki-bg, type: variable-color, title: Note, title.ru: Заметка, format: hex, default: '#fcfdff'}
