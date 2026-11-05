@@ -37,19 +37,19 @@ RelKis has eleven looks: eight dark and three light. To change them, install the
 [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin and open its RelKis section: pick one look
 for dark mode and one for light mode. Without it, dark mode is Cosmos and light mode is Washi.
 
-| Look | Mode | What it is |
-| --- | --- | --- |
-| Cosmos | dark | deep violet and gold, a quiet haze over the note, stardust on the frame (default) |
-| Ink Cosmos | dark | a colder night, blue ink and pale gold |
-| Kintsugi | dark | black lacquer with gold seams, a drop of cinnabar and gold dust on the frame |
-| Sakura · night | dark | plum night, pink sakura, petals on the frame and lantern gold |
-| Indigo | dark | indigo-dyed cloth and silver |
-| Moss | dark | a moss garden at dusk and old bronze |
-| Graphite | dark | pure sumi ink and one cinnabar accent |
-| Kira-kira | dark | black gloss, bright pink, glitter on the frame and a rhinestone bow |
-| Washi | light | rice paper, ink and a cinnabar seal (default) |
-| Sakura · day | light | a pink frame, a white sheet, ink and a sakura seal |
-| Yuki | light | fresh snow, a cold blue frame and a clean blue accent |
+| Look | In Japanese | Mode | What it is |
+| --- | --- | --- | --- |
+| Cosmos | 宇宙, uchū, "the universe" | dark | deep violet and gold, a quiet haze over the note, stardust on the frame (default) |
+| Ink Cosmos | 墨の宇宙, sumi no uchū, "a cosmos in ink" | dark | a colder night, blue ink and pale gold |
+| Kintsugi | 金継ぎ, "golden repair" | dark | black lacquer with gold seams, a drop of cinnabar and gold dust on the frame |
+| Sakura · night | 夜桜, yozakura, "cherry blossoms at night" | dark | plum night, pink sakura, petals on the frame and lantern gold |
+| Indigo | 藍, ai, "indigo" | dark | indigo-dyed cloth and silver |
+| Moss | 苔, koke, "moss" | dark | a moss garden at dusk and old bronze |
+| Graphite | 黒鉛, kokuen, "graphite" | dark | pure sumi ink and one cinnabar accent |
+| Kira-kira | きらきら, "sparkling, glittering" | dark | black gloss, bright pink, glitter on the frame and a rhinestone bow |
+| Washi | 和紙, "Japanese paper" | light | rice paper, ink and a cinnabar seal (default) |
+| Sakura · day | 昼の桜, hiru no sakura, "cherry blossoms by day" | light | a pink frame, a white sheet, ink and a sakura seal |
+| Yuki | 雪, "snow" | light | fresh snow, a cold blue frame and a clean blue accent |
 
 Each look has its own colours, and you can adjust them in Style Settings too. A companion plugin (not public yet) keeps
 its look and the theme's in sync. The theme is complete without it.
